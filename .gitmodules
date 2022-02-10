@@ -73,3 +73,6 @@
 [submodule "pack/plugins/start/vim-cljfmt"]
 	path = pack/plugins/start/vim-cljfmt
 	url = https://github.com/dmac/vim-cljfmt
+[submodule "pack/plugins/start/nvim-lspconfig"]
+	path = pack/plugins/start/nvim-lspconfig
+	url = https://github.com/neovim/nvim-lspconfig

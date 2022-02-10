@@ -10,6 +10,7 @@ set wildmode=list:longest
 set scrolloff=3 " Keep three lines of context when scrolling.
 set expandtab
 set tabstop=2
+set shiftwidth=2
 set ignorecase
 set smartcase
 set undofile
@@ -79,7 +80,7 @@ nnoremap <leader>gu :GundoToggle<cr>
 nnoremap ; :Buffers<CR>
 nnoremap <leader>d :Files<CR>
 
-" rg (via vim-ripgrip)
+" rg (via vim-ripgrep)
 nnoremap <leader>a :Rg 
 
 " easy-align settings
@@ -145,8 +146,11 @@ command! FocusQuickfix call FocusQuickfix()
 
 " }}}
 " ------------------------------- My Mappings ------------------------------ {{{
+" Invoke omnicompletion with a single chord.
+inoremap <C-o> <C-x><C-o>
+
 " Quickly un-highlight search terms
-noremap <leader>nn :GOVIMClearReferencesHighlights<CR>:noh<CR>
+noremap <leader>nn lua vim.lsp.buf.clear_references()<CR>:noh<CR>
 
 " Quickly delete trailing whitespace (with cursor position restore)
 nnoremap <leader>$ :call <SID>DeleteTrailingWhitespace()<cr>
@@ -197,19 +201,6 @@ nnoremap Q gqap
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 
-"" Go shortcuts
-"nnoremap <leader>gi : <C-u>call GOVIMHover()<CR>
-"nnoremap <leader>gh :GOVIMHighlightReferences<CR>
-"nnoremap <leader>gf :GOVIMReferences<CR>
-"nnoremap <leader>gr :GOVIMRename<CR>
-"nnoremap <leader>gd :GOVIMQuickfixDiagnostics<CR> :FocusQuickfix<CR>
-"
-"" TODO:
-"" nnoremap <leader>gb <Plug>(go-build)
-"" nnoremap <leader>gt <Plug>(go-test)
-"" nnoremap <leader>gf <Plug>(go-test-func)
-"" nnoremap <leader>gc <Plug>(go-coverage-toggle)
-
 " Quickly 'go run' the current file. Good for little scratch programs.
 nnoremap <leader>gg :!go run %<cr>
 
@@ -219,31 +210,21 @@ nnoremap cpo :Eval<cr>
 
 " }}}
 " ------------------------- Language-specific Settings --------------------- {{{
-"" Go (+govim)
-"" Docs here: https://godoc.org/github.com/myitcv/govim/cmd/govim/config
-"packadd govim
-"" Disable a bunch of spammy/disruptive/colorful stuff that's on by default in
-"" govim.
-"call govim#config#Set("QuickfixAutoDiagnostics", 0)
-"call govim#config#Set("QuickfixSigns", 0)
-"call govim#config#Set("HighlightDiagnostics", 0)
-"call govim#config#Set("HighlightReferences", 0)
+" Go
+lua require("go_lsp")
+augroup go
+  autocmd!
+  autocmd BufWritePre *.go lua vim.lsp.buf.formatting()
+  autocmd BufWritePre *.go lua goimports(1000)
+  autocmd FileType go,asm,gomod setlocal noexpandtab
+  autocmd FileType go,asm,gomod setlocal ts=8
+  autocmd FileType go,asm,gomod setlocal sw=8
+augroup END
 "" TODO:
-"" - Send the appropriate -local flag to gopls (https://github.com/golang/go/issues/32049)
-"" - Make govim use the gopls from my path (https://github.com/myitcv/govim/issues/440)
-"" - Add a shortcut for doing all of the following at once:
-""   * Run GOVIMQuickfixDiagnostics
-""   * If the quickfix window is populated, open it and jump to the first item
-""   * If the quickfix window is not populated, close it
-""   Once there is a command for running go test etc, add similar shortcuts for
-""   those as well.
-"augroup go
-"  au!
-"  au FileType go,asm,gomod setlocal noexpandtab
-"  au FileType go,asm,gomod setlocal ts=8
-"  au FileType go,asm,gomod setlocal sw=8
-"augroup END
-"let g:go_highlight_trailing_whitespace_error = 0
+"" nnoremap <leader>gb <Plug>(go-build)
+"" nnoremap <leader>gt <Plug>(go-test)
+"" nnoremap <leader>gf <Plug>(go-test-func)
+"" nnoremap <leader>gc <Plug>(go-coverage-toggle)
 
 " Rust
 let g:rustfmt_autosave = 1

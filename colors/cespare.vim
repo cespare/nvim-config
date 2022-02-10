@@ -60,6 +60,10 @@ hi PmenuSel     ctermfg=NONE  ctermbg=24    guifg=fg      guibg=#005f87
 hi PmenuSbar    ctermfg=249   ctermbg=252   guifg=#b2b2b2 guibg=#d0d0d0
 hi PmenuThumb   ctermfg=NONE  ctermbg=244   guifg=fg      guibg=#808080
 
+hi LspReferenceRead  ctermbg=38 guibg=#00afd7
+hi LspReferenceText  ctermbg=38 guibg=#00afd7
+hi LspReferenceWrite ctermbg=38 guibg=#00afd7
+
 "hi StatusLine   ctermfg=NONE ctermbg=NONE guifg=NONE guibg=NONE
 "hi StatusLineNC ctermfg=NONE ctermbg=NONE guifg=NONE guibg=NONE
 
