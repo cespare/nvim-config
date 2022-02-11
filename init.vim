@@ -150,7 +150,7 @@ command! FocusQuickfix call FocusQuickfix()
 inoremap <C-o> <C-x><C-o>
 
 " Quickly un-highlight search terms
-noremap <leader>nn lua vim.lsp.buf.clear_references()<CR>:noh<CR>
+noremap <leader>nn :noh<CR>
 
 " Quickly delete trailing whitespace (with cursor position restore)
 nnoremap <leader>$ :call <SID>DeleteTrailingWhitespace()<cr>
