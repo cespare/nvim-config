@@ -96,6 +96,11 @@ let g:airline#extensions#wordcount#enabled = 0
 " Tell SnipMate that we're aware of the new format.
 let g:snipMate = { 'snippet_version' : 1 }
 
+" Insertlessly
+let g:insertlessly_insert_spaces = 0
+let g:insertlessly_cleanup_trailing_ws = 0
+let g:insertlessly_cleanup_all_ws = 0
+
 " }}}
 " ---------------------- Custom Commands and Functions --------------------- {{{
 " A function to delete all trailing whitespace from a file. (From
