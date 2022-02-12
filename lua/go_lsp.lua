@@ -31,6 +31,7 @@ nvim_lsp.gopls.setup{
       analyses = {
         fillstruct = false,
       },
+      ['local'] = 'liftoff/',
     },
   },
   on_attach = on_attach,
