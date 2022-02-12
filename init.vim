@@ -215,7 +215,7 @@ lua require("go_lsp")
 augroup go
   autocmd!
   autocmd BufWritePre *.go lua vim.lsp.buf.formatting()
-  autocmd BufWritePre *.go lua goimports(1000)
+  autocmd BufWritePre *.go lua organize_imports(1000)
   autocmd FileType go,asm,gomod setlocal noexpandtab
   autocmd FileType go,asm,gomod setlocal ts=8
   autocmd FileType go,asm,gomod setlocal sw=8
