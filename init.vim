@@ -1,7 +1,8 @@
 " ---------------------------- Basic Settings ------------------------------ {{{
-" Text-wrapping stuff. (Also check out my cursorcolumn setting in .gvimrc.)
+" Text-wrapping stuff.
 set textwidth=80
-let &wrapmargin= &textwidth
+let &wrapmargin = &textwidth
+let &colorcolumn = &wrapmargin
 " Don't hard-wrap long lines as you're typing (annoying), but allow gq to work.
 set formatoptions=croql
 
