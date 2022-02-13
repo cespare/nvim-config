@@ -225,12 +225,6 @@ augroup go
   au FileType go,asm,gomod setlocal noexpandtab
   au FileType go,asm,gomod setlocal ts=8
   au FileType go,asm,gomod setlocal sw=8
-  " Tweak endwise to also add closing braces for Go.
-  au FileType go
-    \ let b:endwise_addition = '}' |
-    \ let b:endwise_words = '{' |
-    \ let b:endwise_pattern = '{\s*$' |
-    \ let b:endwise_syngroups = '.*'
 augroup END
 "" TODO:
 "" nnoremap <leader>gb <Plug>(go-build)
