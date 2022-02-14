@@ -75,14 +75,14 @@ augroup END
 " }}}
 " ------------------------ Plugin-specific Settings ------------------------ {{{
 " Gundo settings
-nnoremap <leader>gu :GundoToggle<cr>
+nnoremap <leader>gu :GundoToggle<CR>
 
 " fzf
 nnoremap ; :Buffers<CR>
 nnoremap <leader>d :Files<CR>
 
 " rg (via vim-ripgrep)
-nnoremap <leader>a :Rg 
+nnoremap <leader>a :Rg<Space>
 
 " easy-align settings
 vnoremap <leader>a :EasyAlign<Enter>
@@ -104,27 +104,15 @@ let g:insertlessly_cleanup_all_ws = 0
 
 " }}}
 " ---------------------- Custom Commands and Functions --------------------- {{{
-" A function to delete all trailing whitespace from a file. (From
-" http://vimcasts.org/episodes/tidying-whitespace/)
-function! <SID>DeleteTrailingWhitespace()
-  " Preparation: save last search, and cursor position.
-  let _s=@/
-  let l = line(".")
-  let c = col(".")
-  " Do the business:
-  %s/\s\+$//e
-  " Clean up: restore previous search history, and cursor position
-  let @/=_s
-  call cursor(l, c)
-endfunction
+lua require("funcs")
 
 " Preview the current markdown file:
-command! Markdownd !markdownd -w % >/dev/null &
+command! Markdownd call jobstart(['markdownd', '-w', @%])
 
 " Toggle colorcolumn
 function! ToggleColorColumn()
   if &colorcolumn == 0
-    " Draw the color column wherever wrapmargin is set
+    " Draw the color column wherever wrapmargin is set.
     let &colorcolumn = &wrapmargin
   else
     let &colorcolumn = 0
@@ -141,7 +129,8 @@ function! SynStack()
 endfunc
 
 " After running a command which alters the quickfix window, this function is
-" useful for opening the window (if it's non-empty) and focus the first result.
+" useful for opening the window (if it's non-empty) and focusing the first
+" result.
 function! FocusQuickfix()
   cwindow
   if len(getqflist()) > 0
@@ -159,15 +148,15 @@ inoremap <C-o> <C-x><C-o>
 noremap <leader>nn :noh<CR>
 
 " Quickly delete trailing whitespace (with cursor position restore)
-nnoremap <leader>$ :call <SID>DeleteTrailingWhitespace()<cr>
+nnoremap <leader>$ :lua delete_trailing_whitespace()<CR>
 
 " Make Y be like C and D (yank to end of line), a mapping so obvious it's
 " recommended by :help Y.
 nnoremap Y y$
 
 " Shortcuts for creating splits
-nnoremap <leader>h :split<cr>
-nnoremap <leader>v :vsplit<cr>
+nnoremap <leader>h :split<CR>
+nnoremap <leader>v :vsplit<CR>
 
 " Make it easier to move around through blocks of text:
 noremap <C-j> gj
@@ -182,20 +171,20 @@ nnoremap <silent> <leader>q :bp\|bd #<CR>
 nnoremap <Space> :
 
 " Shortcuts for using the quickfix window (partly copied from unimpaired):
-nnoremap ]q :cnext<cr>
-nnoremap [q :cprevious<cr>
-nnoremap [Q :cfirst<cr>
-nnoremap ]Q :clast<cr>
-nnoremap <leader>x :cclose<cr>
+nnoremap ]q :cnext<CR>
+nnoremap [q :cprevious<CR>
+nnoremap [Q :cfirst<CR>
+nnoremap ]Q :clast<CR>
+nnoremap <leader>x :cclose<CR>
 
 "" Shortcuts for custom commands:
-noremap <leader>m :Markdownd<cr><cr>
-noremap <leader>l :ToggleColorColumn<cr>
+noremap <leader>m :Markdownd<CR>
+noremap <leader>l :ToggleColorColumn<CR>
 
 "" Git blame shortcut (fugitive)
-noremap <leader>bl :Git blame<cr>
+noremap <leader>bl :Git blame<CR>
 " Open GitHub page in browser (fugitive/rhubarb)
-noremap <leader>bb :GBrowse<cr>
+noremap <leader>bb :GBrowse<CR>
 
 " Quick fold toggling
 noremap <leader>f za
@@ -204,20 +193,20 @@ noremap <leader>f za
 nnoremap Q gqap
 
 " Suggestions from Learn Vimscript the Hard Way
-nnoremap <leader>ev :vsplit $MYVIMRC<cr>
-nnoremap <leader>sv :source $MYVIMRC<cr>
+nnoremap <leader>ev :vsplit $MYVIMRC<CR>
+nnoremap <leader>sv :source $MYVIMRC<CR>
 
 " Quickly 'go run' the current file. Good for little scratch programs.
-nnoremap <leader>gg :!go run %<cr>
+nnoremap <leader>gg :!go run %<CR>
 
 " I usually want to evaluate the outermost s-expr in Clojure. This is often more
 " handy than cpp (evaluate current expr).
-nnoremap cpo :Eval<cr>
+nnoremap cpo :Eval<CR>
 
 " }}}
 " ------------------------- Language-specific Settings --------------------- {{{
 " Go
-lua require("go_lsp")
+lua require("gopls")
 augroup go
   au!
   au BufWritePre *.go lua vim.lsp.buf.formatting()
