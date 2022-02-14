@@ -86,10 +86,16 @@ nnoremap <leader>a :Rg<Space>
 
 " easy-align settings
 vnoremap <leader>a :EasyAlign<Enter>
-
 " Airline
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+let g:airline_symbols.branch = '⎇'
 let g:airline_theme = 'minimalist'
-let g:airline_section_z='%3p%% • %l/%L • %v'
+let g:airline_mode_map_codes = 1
+let g:airline_section_b = '%{airline#util#wrap(airline#extensions#branch#get_head(),120)}'
+let g:airline_section_y = '%{airline#util#wrap(airline#parts#ffenc(),200)}'
+let g:airline_section_z = '%p%% • %l/%L • %v'
 let g:airline_section_error = ''
 let g:airline_section_warning = ''
 let g:airline#extensions#wordcount#enabled = 0
