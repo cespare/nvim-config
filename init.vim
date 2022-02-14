@@ -104,7 +104,7 @@ let g:insertlessly_cleanup_all_ws = 0
 
 " }}}
 " ---------------------- Custom Commands and Functions --------------------- {{{
-lua require("funcs")
+lua require("globals")
 
 " Preview the current markdown file:
 command! Markdownd call jobstart(['markdownd', '-w', @%])
@@ -214,6 +214,7 @@ augroup go
   au FileType go,asm,gomod setlocal noexpandtab
   au FileType go,asm,gomod setlocal ts=8
   au FileType go,asm,gomod setlocal sw=8
+  au FileType go,gomod inoremap <silent> <buffer> <CR> <C-R>=luaeval("maybe_insert_closing_brace()")<CR>
 augroup END
 "" TODO:
 "" nnoremap <leader>gb <Plug>(go-build)
