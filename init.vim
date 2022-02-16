@@ -20,7 +20,7 @@ set foldlevelstart=99
 
 " When completing, don't automatically select the first choice, but instead just
 " insert the longest common text.
-set completeopt=menu,longest
+set completeopt=menu
 
 let mapleader = ","
 
@@ -148,7 +148,11 @@ command! FocusQuickfix call FocusQuickfix()
 " }}}
 " ------------------------------- My Mappings ------------------------------ {{{
 " Invoke omnicompletion with a single chord.
-inoremap <C-o> <C-x><C-o>
+" Press the same key to bail out of the menu without inserting text.
+inoremap <expr> <C-O> pumvisible() ? '<C-E>' : '<C-X><C-O>'
+" Add ctrl-j/k for moving up and down in the menu.
+inoremap <expr> <C-J> pumvisible() ? '<C-N>' : ''
+inoremap <expr> <C-K> pumvisible() ? '<C-P>' : ''
 
 " Quickly un-highlight search terms
 noremap <leader>nn :noh<CR>
