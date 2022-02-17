@@ -20,7 +20,7 @@ set foldlevelstart=99
 
 " When completing, don't automatically select the first choice, but instead just
 " insert the longest common text.
-set completeopt=menu
+set completeopt=menu,menuone
 
 let mapleader = ","
 
