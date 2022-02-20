@@ -19,7 +19,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<leader>ga', '<Cmd>lua vim.lsp.buf.code_action()<CR>', opts)
 
   vim.diagnostic.config({underline = false, virtual_text = false, signs = false})
-  buf_set_keymap('n', '<leader>gd', '<Cmd>lua vim.diagnostic.setqflist()<CR>:FocusQuickfix<CR>', opts)
+  buf_set_keymap('n', '<leader>gd', '<Cmd>lua vim.diagnostic.setqflist{open=false}<CR>:FocusQuickfix<CR>', opts)
 end
 
 nvim_lsp.gopls.setup{

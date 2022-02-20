@@ -136,7 +136,7 @@ endfunc
 " useful for opening the window (if it's non-empty) and focusing the first
 " result.
 function! FocusQuickfix()
-  cwindow
+  botright cwindow
   if len(getqflist()) > 0
     cfirst
   endif
