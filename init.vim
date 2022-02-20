@@ -223,6 +223,7 @@ augroup go
   au FileType go,asm,gomod setlocal ts=8
   au FileType go,asm,gomod setlocal sw=8
   au FileType go,gomod inoremap <silent> <buffer> <CR> <C-R>=luaeval("maybe_insert_closing_brace()")<CR>
+  au BufRead,BufNewFile *.tpl set filetype=gotexttmpl
 augroup END
 "" TODO:
 "" nnoremap <leader>gb <Plug>(go-build)
