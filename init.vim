@@ -4,7 +4,8 @@ set textwidth=80
 let &wrapmargin = &textwidth
 let &colorcolumn = &wrapmargin
 " Don't hard-wrap long lines as you're typing (annoying), but allow gq to work.
-set formatoptions=croql
+" Don't include comment characters.
+set formatoptions=croqlj
 
 set number
 set wildmode=list:longest
@@ -17,10 +18,7 @@ set smartcase
 set undofile
 set splitright
 set foldlevelstart=99
-
-" When completing, don't automatically select the first choice, but instead just
-" insert the longest common text.
-set completeopt=menu,menuone
+set completeopt=menu,longest
 
 let mapleader = ","
 
