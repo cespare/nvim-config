@@ -80,7 +80,8 @@ nnoremap ; :Buffers<CR>
 nnoremap <leader>d :Files<CR>
 
 " rg (via vim-ripgrep)
-nnoremap <leader>a :Rg<Space>
+nnoremap <leader>rr :Rg<Space>
+nnoremap <leader>rt :Rg -g '!*_test.go'<Space>
 
 " easy-align settings
 vnoremap <leader>a :EasyAlign<Enter>
