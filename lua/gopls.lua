@@ -29,7 +29,7 @@ nvim_lsp.gopls.setup{
   settings = {
     gopls = {
       linksInHover = false,
-      ['local'] = 'liftoff/',
+      ['local'] = 'liftoff.io/',
     },
   },
   on_attach = on_attach,
