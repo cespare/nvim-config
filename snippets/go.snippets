@@ -41,3 +41,5 @@ snippet wantgot
 	if ${1:want} != ${2:got} {
 		t.Fatalf("want %v; got %v", $1, $2)
 	}
+snippet app append
+	${1:slice} = append($1, ${2:element})
