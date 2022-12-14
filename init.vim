@@ -173,14 +173,6 @@ noremap <C-k> gk
 noremap <expr> <C-h> (&scroll-2).'k'
 noremap <expr> <C-l> (&scroll+2).'j'
 
-" Move the current line up or down with alt-j/k
-nnoremap <A-j> :m .+1<CR>==
-nnoremap <A-k> :m .-2<CR>==
-inoremap <A-j> <Esc>:m .+1<CR>==gi
-inoremap <A-k> <Esc>:m .-2<CR>==gi
-vnoremap <A-j> :m '>+1<CR>gv=gv
-vnoremap <A-k> :m '<-2<CR>gv=gv
-
 " Close a buffer without messing with the windows.
 nnoremap <silent> <leader>q :bp\|bd #<CR>
 
