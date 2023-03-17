@@ -82,3 +82,6 @@
 [submodule "pack/plugins/start/vim-shfmt"]
 	path = pack/plugins/start/vim-shfmt
 	url = git@github.com:z0mbix/vim-shfmt.git
+[submodule "pack/plugins/start/vim-sway"]
+	path = pack/plugins/start/vim-sway
+	url = git@github.com:cespare/vim-sway.git
