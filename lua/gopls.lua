@@ -35,6 +35,17 @@ nvim_lsp.gopls.setup{
   on_attach = on_attach,
 }
 
+function format()
+  -- The name of the function changed in recent neovim from 'formatting' to
+  -- 'format'.
+  -- TODO: Delete this function once I'm using the newer version everwhere.
+  if vim.lsp.buf.formatting ~= nil then
+    vim.lsp.buf.formatting()
+  else
+    vim.lsp.buf.format()
+  end
+end
+
 function organize_imports(timeout_ms)
   local params = vim.lsp.util.make_range_params()
   params.context = {only = {'source.organizeImports'}}
