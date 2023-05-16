@@ -1,50 +1,17 @@
-local nvim_lsp = require('lspconfig')
+local lspconfig = require('lspconfig')
+local lcutil = require('lspconfig/util')
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-
-local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  local opts = { noremap=true, silent=true }
-  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-
-  buf_set_keymap('n', '<leader>gh', '<Cmd>lua vim.lsp.buf.document_highlight()<CR>', opts)
-  buf_set_keymap('n', '<leader>nn', '<Cmd>lua vim.lsp.buf.clear_references()<CR>:noh<CR>', opts)
-  buf_set_keymap('n', '<leader>gi', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', '<leader>gf', '<Cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<leader>gr', '<Cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', '<leader>ga', '<Cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-
-  vim.diagnostic.config({underline = false, virtual_text = false, signs = false})
-  buf_set_keymap('n', '<leader>gd', '<Cmd>lua vim.diagnostic.setqflist{open=false}<CR>:FocusQuickfix<CR>', opts)
-end
-
-nvim_lsp.gopls.setup{
+lspconfig.gopls.setup{
 	cmd = {'gopls'},
-  -- for postfix snippets and analyzers
-  capabilities = capabilities,
+  filetypes = {"go", "gomod", "gowork"},
+  root_dir = lcutil.root_pattern("go.work", "go.mod"),
   settings = {
     gopls = {
       linksInHover = false,
       ['local'] = 'liftoff.io/',
     },
   },
-  on_attach = on_attach,
 }
-
-function format()
-  -- The name of the function changed in recent neovim from 'formatting' to
-  -- 'format'.
-  -- TODO: Delete this function once I'm using the newer version everwhere.
-  if vim.lsp.buf.formatting ~= nil then
-    vim.lsp.buf.formatting()
-  else
-    vim.lsp.buf.format()
-  end
-end
 
 function organize_imports(timeout_ms)
   local params = vim.lsp.util.make_range_params()

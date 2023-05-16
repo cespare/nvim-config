@@ -70,6 +70,8 @@ augroup highlight_whitespace
   au BufWinLeave * call clearmatches()
 augroup END
 
+lua require("init")
+
 " }}}
 " ------------------------ Plugin-specific Settings ------------------------ {{{
 " Gundo settings
@@ -218,7 +220,7 @@ nnoremap cpo :Eval<CR>
 lua require("gopls")
 augroup go
   au!
-  au BufWritePre *.go lua format()
+  au BufWritePre *.go lua vim.lsp.buf.format()
   au BufWritePre *.go lua organize_imports(1000)
   au FileType go,asm,gomod setlocal noexpandtab
   au FileType go,asm,gomod setlocal ts=8
