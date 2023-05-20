@@ -246,6 +246,9 @@ augroup markdown
   au!
   au FileType markdown setlocal comments=b:*,b:-,b:+,n:>h
 augroup END
+" This is a recent vim-markdown addition -- without overriding this setting, it
+" sets tabstop (and friends) to 4.
+let g:markdown_recommended_style = 0
 
 " Vimscript
 augroup filetype_vim
@@ -264,3 +267,15 @@ augroup END
 hi def link jsonKeyword String
 " Turn off disruptive error highlighting.
 let g:vim_json_warnings = 0
+
+" JavaScript
+augroup javascript
+  au!
+  au FileType javascript inoremap <silent> <buffer> <CR> <C-R>=luaeval("maybe_insert_closing_brace()")<CR>
+augroup END
+
+" CSS
+augroup css
+  au!
+  au FileType css inoremap <silent> <buffer> <CR> <C-R>=luaeval("maybe_insert_closing_brace()")<CR>
+augroup END
