@@ -88,10 +88,7 @@ nnoremap <leader>rt :Rg -g '!*_test.go'<Space>
 " easy-align settings
 vnoremap <leader>a :EasyAlign<Enter>
 " Airline
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-let g:airline_symbols.branch = '⎇'
+let g:airline_symbols_ascii = 1
 let g:airline_theme = 'minimalist'
 let g:airline_mode_map_codes = 1
 let g:airline_section_b = '%{airline#util#wrap(airline#extensions#branch#get_head(),120)}'
