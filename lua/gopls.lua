@@ -8,7 +8,11 @@ lspconfig.gopls.setup{
   settings = {
     gopls = {
       linksInHover = false,
+      gofumpt = true,
       ['local'] = 'liftoff.io/',
+      analyses = {
+        unusedparams = false,
+      },
     },
   },
 }
