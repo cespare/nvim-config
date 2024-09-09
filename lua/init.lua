@@ -1,4 +1,4 @@
-local lspconfig = require('lspconfig')
+local treesitter = require("nvim-treesitter.configs")
 
 -- I don't want diagnostics to show up at all except via the quickfix list.
 vim.diagnostic.config({underline = false, virtual_text = false, signs = false})
@@ -51,4 +51,27 @@ vim.api.nvim_create_autocmd('LspAttach', {
       opts
     )
   end,
+})
+
+-- Set up nvim-treesitter.
+treesitter.setup({
+  ensure_installed = {"go"},
+  sync_install = true,
+  auto_install = false,
+
+  highlight = {
+    enable = true,
+    disable = function (lang, bufnr) return lang ~= "go" end,
+    additional_vim_regex_highlighting = false,
+  },
+
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "<C-space>",
+      node_incremental = "<C-space>",
+      scope_incremental = false,
+      node_decremental = "<bs>",
+    },
+  },
 })
