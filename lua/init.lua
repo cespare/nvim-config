@@ -34,12 +34,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
     )
 
     vim.keymap.set('n', '<leader>gh', vim.lsp.buf.document_highlight, opts)
-    -- TODO: C-i and tab are indistinguishable by nvim using alacritty+tmux
-    -- right now, so this binding breaks <tab>. There's a recent push for
-    -- extending keyboard handling using special escape codes, largely pushed by
-    -- kitty, and it is already adopted in neovim (but not alacritty or tmux).
-    -- Once that's broadly implemented, this might work as-is.
-    -- vim.keymap.set('i', '<C-i>', vim.lsp.buf.signature_help, opts)
+    -- TODO: C-i would be a nicer mapping here, but C-i and tab are
+    -- indistinguishable by terminals historically. Neovim and ghostty *should*
+    -- both support the kitty keyboard protocol, but tmux doesn't yet, and even
+    -- without tmux I can't seem to get the C-i mapping working without breaking
+    -- tab.
+    vim.keymap.set('i', '<C-f>', vim.lsp.buf.signature_help, opts)
     vim.keymap.set('n', '<leader>gi', vim.lsp.buf.hover, opts)
     vim.keymap.set('n', '<leader>gf', vim.lsp.buf.references, opts)
     vim.keymap.set('n', '<leader>gr', vim.lsp.buf.rename, opts)
