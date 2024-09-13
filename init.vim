@@ -124,14 +124,6 @@ function! ToggleColorColumn()
 endfunction
 command! ToggleColorColumn call ToggleColorColumn()
 
-" Show the current highlight group underneath the cursor:
-function! SynStack()
-  if !exists("*synstack")
-    return
-  endif
-  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
-endfunc
-
 " After running a command which alters the quickfix window, this function is
 " useful for opening the window (if it's non-empty) and focusing the first
 " result.
