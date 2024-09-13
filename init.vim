@@ -268,3 +268,9 @@ augroup css
   au!
   au FileType css inoremap <silent> <buffer> <CR> <C-R>=luaeval("maybe_insert_closing_brace()")<CR>
 augroup END
+
+" Quickfix
+augroup quickfix
+  au!
+  au FileType qf setlocal cursorline
+augroup END
