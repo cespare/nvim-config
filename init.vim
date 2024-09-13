@@ -18,7 +18,7 @@ set smartcase
 set undofile
 set splitright
 set foldlevelstart=99
-set completeopt=menuone
+set completeopt=menu
 
 let mapleader = ","
 
