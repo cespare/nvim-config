@@ -14,25 +14,61 @@ endif
 let g:colors_name = "cespare"
 
 let s:normal_items = [
-            \ "ColorColumn", "Comment", "Constant", "Cursor", "CursorColumn",
-            \ "CursorIM", "CursorLine", "CursorLineNr", "DiffAdd", "DiffChange",
-            \ "DiffDelete", "Directory", "Error", "ErrorMsg", "Identifier",
-            \ "IncSearch", "LineNr", "MatchParen", "ModeMsg", "MoreMsg",
-            \ "NonText", "Pmenu", "PmenuSbar", "PmenuSel",
-            \ "PmenuThumb", "PreProc", "Question", "Search", "SignColumn",
-            \ "Special", "SpecialKey", "Statement", "TabLine",
-            \ "TabLineFill", "Todo", "Type", "VertSplit", "Visual",
-            \ "WarningMsg", "WildMenu",
-            \ ]
+      \ "ColorColumn",
+      \ "Comment",
+      \ "Constant",
+      \ "Cursor",
+      \ "CursorColumn",
+      \ "CursorIM",
+      \ "CursorLine",
+      \ "CursorLineNr",
+      \ "DiffAdd",
+      \ "DiffChange",
+      \ "DiffDelete",
+      \ "Directory",
+      \ "Error",
+      \ "ErrorMsg",
+      \ "Function",
+      \ "Identifier",
+      \ "IncSearch",
+      \ "LineNr",
+      \ "MatchParen",
+      \ "ModeMsg",
+      \ "MoreMsg",
+      \ "NonText",
+      \ "Pmenu",
+      \ "PmenuSbar",
+      \ "PmenuSel",
+      \ "PmenuThumb",
+      \ "PreProc",
+      \ "Question",
+      \ "Search",
+      \ "SignColumn",
+      \ "Special",
+      \ "SpecialKey",
+      \ "Statement",
+      \ "TabLine",
+      \ "TabLineFill",
+      \ "Todo",
+      \ "Type",
+      \ "VertSplit",
+      \ "Visual",
+      \ "WarningMsg",
+      \ "WildMenu",
+      \ ]
 
 let s:bold_items = [
-            \ "DiffText", "FoldColumn", "Folded", "TabLineSel",
-            \ "Title",
-            \ ]
+      \ "DiffText",
+      \ "FoldColumn",
+      \ "Folded",
+      \ "TabLineSel",
+      \ "Title",
+      \ ]
 
 let s:underline_items = [
-            \ "Underlined", "VisualNOS"
-            \ ]
+      \ "Underlined",
+      \ "VisualNOS"
+      \ ]
 
 " Clear default settings
 for s:item in s:normal_items + s:bold_items + s:underline_items
@@ -41,13 +77,14 @@ for s:item in s:normal_items + s:bold_items + s:underline_items
 endfor
 
 hi clear Normal
-hi Normal       ctermfg=NONE  ctermbg=NONE  guifg=#d7d7d7 guibg=#191919
+hi Normal       ctermfg=NONE  ctermbg=NONE  guifg=#d7d7d7 guibg=#141414
 hi IncSearch    ctermfg=NONE  ctermbg=24    guifg=NONE    guibg=#005f87
 hi Search       ctermfg=NONE  ctermbg=24    guifg=NONE    guibg=#005f87
-hi Comment      ctermfg=246   cterm=NONE    guifg=#949494 gui=NONE
+hi CurSearch                                guifg=bg      guibg=#c0c0c0
+hi Comment      ctermfg=246   cterm=NONE    guifg=#949494 guibg=NONE
 hi MatchParen   ctermfg=NONE  ctermbg=237   guifg=NONE    guibg=#2c5475
 hi Error        ctermfg=NONE  ctermbg=239   guifg=NONE    guibg=#4e4e4e
-hi LineNr       ctermfg=245   ctermbg=235   guifg=#8a8a8a guibg=#404040
+hi LineNr       ctermfg=245   ctermbg=235   guifg=#8a8a8a guibg=#282828
 hi Cursor                                   guifg=bg      guibg=#87afd7
 hi ColorColumn  ctermfg=NONE  ctermbg=237   guifg=NONE    guibg=#3a3a3a
 hi String       ctermfg=150                 guifg=#afd787
