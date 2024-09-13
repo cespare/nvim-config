@@ -2,7 +2,9 @@ local lspconfig = require('lspconfig')
 local lcutil = require('lspconfig/util')
 
 lspconfig.gopls.setup{
-	cmd = {'gopls'},
+  -- Debugging:
+  -- cmd = {'gopls', '-logfile', '/tmp/gopls.log', '-rpc.trace'},
+  cmd = {'gopls'},
   filetypes = {"go", "gomod", "gowork"},
   root_dir = lcutil.root_pattern("go.work", "go.mod"),
   settings = {
