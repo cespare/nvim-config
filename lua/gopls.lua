@@ -1,12 +1,25 @@
 local lspconfig = require('lspconfig')
 local lcutil = require('lspconfig/util')
 
+-- Turn off markdown in hover responses. This isn't handled correctly by nvim
+-- and it displays escaping characters -- for example, this markdown:
+--
+--   See the documentation for \[Unmarshal] for details about
+--
+-- The [ is escaped because otherwise "[Unmarshal]" would be interpreted as a
+-- link reference in Markdown. But nvim just displays the \ as-is.
+-- TODO: Figure this out -- ISTM that nvim ought to handle this.
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.hover.contentFormat = {"plaintext"}
+capabilities.textDocument.signatureHelp.documentationFormat = {"plaintext"}
+
 lspconfig.gopls.setup{
   -- Debugging:
   -- cmd = {'gopls', '-logfile', '/tmp/gopls.log', '-rpc.trace'},
   cmd = {'gopls'},
   filetypes = {"go", "gomod", "gowork"},
   root_dir = lcutil.root_pattern("go.work", "go.mod"),
+  capabilities = capabilities,
   settings = {
     gopls = {
       linksInHover = false,
