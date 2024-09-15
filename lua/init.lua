@@ -56,7 +56,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- Set up nvim-treesitter.
 treesitter.setup({
   -- The comment parser highlights things like TODO and FIXME.
-  ensure_installed = {"go", "comment"},
+  ensure_installed = {"go", "comment", "vim", "vimdoc"},
   sync_install = true,
   auto_install = false,
 
