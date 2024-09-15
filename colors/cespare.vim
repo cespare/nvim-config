@@ -79,8 +79,8 @@ endfor
 hi clear Normal
 hi Normal       ctermfg=NONE  ctermbg=NONE  guifg=#f0f0f0 guibg=#141414
 hi IncSearch    ctermfg=NONE  ctermbg=24    guifg=fg      guibg=#005f87
-hi Search       ctermfg=NONE  ctermbg=24    guifg=fg      guibg=#005f87
-hi CurSearch                                guifg=bg      guibg=#b0b0b0
+hi Search       ctermfg=NONE  ctermbg=24    guifg=bg      guibg=#b0b0b0
+hi CurSearch                                guifg=fg      guibg=#005f87
 hi Comment      ctermfg=246   cterm=NONE    guifg=#949494 guibg=NONE
 hi MatchParen   ctermfg=NONE  ctermbg=237   guifg=NONE    guibg=#2c5475
 hi Error        ctermfg=NONE  ctermbg=239   guifg=NONE    guibg=#4e4e4e
