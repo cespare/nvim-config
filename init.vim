@@ -19,6 +19,7 @@ set undofile
 set splitright
 set foldlevelstart=99
 set completeopt=menu
+set statusline=%f%m%r%h%<\ %=%{&ft}\ •\ %p%%\ •\ %l/%L\ •\ %c
 
 let mapleader = ","
 
@@ -87,16 +88,6 @@ nnoremap <leader>rt :Rg -g '!*_test.go'<Space>
 
 " easy-align settings
 vnoremap <leader>a :EasyAlign<Enter>
-" Airline
-let g:airline_symbols_ascii = 1
-let g:airline_theme = 'minimalist'
-let g:airline_mode_map_codes = 1
-let g:airline_section_b = '%{airline#util#wrap(airline#extensions#branch#get_head(),120)}'
-let g:airline_section_y = '%{airline#util#wrap(airline#parts#ffenc(),200)}'
-let g:airline_section_z = '%p%% • %l/%L • %c'
-let g:airline_section_error = ''
-let g:airline_section_warning = ''
-let g:airline#extensions#wordcount#enabled = 0
 
 " Tell SnipMate that we're aware of the new format.
 let g:snipMate = { 'snippet_version' : 1 }

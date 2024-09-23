@@ -97,6 +97,7 @@ hi PmenuSel     ctermfg=NONE  ctermbg=24    guifg=fg      guibg=#005f87
 hi PmenuSbar    ctermfg=249   ctermbg=252   guifg=#b2b2b2 guibg=#d0d0d0
 hi PmenuThumb   ctermfg=NONE  ctermbg=244   guifg=fg      guibg=#808080
 hi NormalFloat  ctermfg=NONE  ctermbg=NONE  guifg=#d7d7d7 guibg=#191919
+hi StatusLine   ctermfg=245   ctermbg=235   guifg=#c0c0c0 guibg=#282828
 
 hi LspReferenceRead  ctermbg=24 guibg=#00afd7
 hi LspReferenceText  ctermbg=24 guibg=#00afd7
