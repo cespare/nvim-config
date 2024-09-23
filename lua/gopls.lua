@@ -27,6 +27,7 @@ lspconfig.gopls.setup{
       ['local'] = 'liftoff.io/',
       analyses = {
         unusedparams = false,
+        infertypeargs = false,
       },
     },
   },
