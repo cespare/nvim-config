@@ -205,11 +205,6 @@ augroup go
   au FileType go,gomod inoremap <silent> <buffer> <CR> <C-R>=luaeval("maybe_insert_closing_brace()")<CR>
   au BufRead,BufNewFile *.tpl set filetype=gotexttmpl
 augroup END
-"" TODO:
-"" nnoremap <leader>gb <Plug>(go-build)
-"" nnoremap <leader>gt <Plug>(go-test)
-"" nnoremap <leader>gf <Plug>(go-test-func)
-"" nnoremap <leader>gc <Plug>(go-coverage-toggle)
 
 " Rust
 let g:rustfmt_autosave = 1
