@@ -1,5 +1,6 @@
 local stringx = require("stringx")
 local treesitter = require("nvim-treesitter.configs")
+local treesj = require("treesj")
 
 -- I don't want diagnostics to show up at all except via the quickfix list.
 vim.diagnostic.config({underline = false, virtual_text = false, signs = false})
@@ -150,3 +151,9 @@ treesitter.setup({
     },
   },
 })
+
+treesj.setup({
+  use_default_keymaps = false,
+})
+
+vim.keymap.set("n", "<leader>js", treesj.toggle)
