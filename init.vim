@@ -75,9 +75,6 @@ lua require("init")
 
 " }}}
 " ------------------------ Plugin-specific Settings ------------------------ {{{
-" Gundo settings
-nnoremap <leader>gu :GundoToggle<CR>
-
 " fzf
 nnoremap ; :Buffers<CR>
 nnoremap <leader>d :Files<CR>
