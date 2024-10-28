@@ -1,3 +1,4 @@
+local stringx = require("stringx")
 local treesitter = require("nvim-treesitter.configs")
 
 -- I don't want diagnostics to show up at all except via the quickfix list.
@@ -14,6 +15,37 @@ function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
   local bufnr, winnr = prev_util_open_floating_preview(contents, syntax, opts, ...)
   vim.api.nvim_win_set_option(winnr, "linebreak", true)
   return bufnr, winnr
+end
+
+local errlist_type_map = {
+  [vim.diagnostic.severity.ERROR] = 'E',
+  [vim.diagnostic.severity.WARN] = 'W',
+  [vim.diagnostic.severity.INFO] = 'I',
+  [vim.diagnostic.severity.HINT] = 'N',
+}
+
+function sort_qflist_items(d0, d1)
+  if d0.bufnr ~= d1.bufnr then
+    -- Put the current buffer first.
+    local curnr = vim.api.nvim_get_current_buf()
+    if d0.bufnr == curnr then return true end
+    if d1.bufnr == curnr then return false end
+    -- Put loaded buffers first.
+    local loaded0 = vim.api.nvim_buf_is_loaded(d0.bufnr)
+    local loaded1 = vim.api.nvim_buf_is_loaded(d1.bufnr)
+    if loaded0 ~= loaded1 then return loaded0 end
+    -- Put test buffers last.
+    local name0 = vim.api.nvim_buf_get_name(d0.bufnr)
+    local name1 = vim.api.nvim_buf_get_name(d1.bufnr)
+    local test0 = stringx.ends(name0, "_test.go")
+    local test1 = stringx.ends(name1, "_test.go")
+    if test0 ~= test1 then return test1 end
+    -- Otherwise, order by filename.
+    return name0 < name1
+  end
+  if d0.lnum ~= d1.lnum then return d0.lnum < d1.lnum end
+  if d0.col ~= d1.col then return d0.col < d1.col end
+  return false
 end
 
 -- Set up LSP key bindings.
@@ -44,10 +76,52 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', '<leader>gf', vim.lsp.buf.references, opts)
     vim.keymap.set('n', '<leader>gr', vim.lsp.buf.rename, opts)
     vim.keymap.set('n', '<leader>ga', vim.lsp.buf.code_action, opts)
+
+    -- I only want to show diagnostics via the quickfix list, and only when
+    -- requested. In particular, <leader>gd should populate the quickfix list
+    -- and then open and focus it, but only if there are diagnostics to show.
+    -- LSP servers like gopls tend to report diagnostics for the whole project
+    -- (module in the gopls case), not just for the files that are open. That
+    -- can be useful, but can also be annoying if working in a module that
+    -- contains some unrelated, broken code. Therefore, the main <leader>gd
+    -- binding filters just the diagnostics for the currently-open buffers and a
+    -- second binding, <leader>gpd (mnemonic: "project diagnostics"), shows all
+    -- the diagnostics.
+    --
+    -- Additionally, by default, simply using vim.diagnostic.seqflist populates
+    -- the diagnostics in a nondeterministic order, so my versions also sort
+    -- them properly.
+    get_buffer_diagnostics = function(project_wide)
+      -- This function also replicates part of vim.diagnostic.toqflist because
+      -- that function does (unwanted) sorting.
+      local items = {}
+      for _, d in ipairs(vim.diagnostic.get(nil)) do
+        if project_wide or vim.api.nvim_buf_is_loaded(d.bufnr) then
+          local item = {
+            bufnr = d.bufnr,
+            lnum = d.lnum + 1,
+            col = d.col and (d.col + 1) or nil,
+            end_lnum = d.end_lnum and (d.end_lnum + 1) or nil,
+            end_col = d.end_col and (d.end_col + 1) or nil,
+            text = d.message,
+            type = errlist_type_map[d.severity] or 'E',
+          }
+          table.insert(items, item)
+        end
+      end
+      table.sort(items, sort_qflist_items)
+      vim.fn.setqflist( {}, ' ', {title = 'Diagnostics', items = items})
+    end
     vim.keymap.set(
       'n',
       '<leader>gd',
-      '<cmd> lua vim.diagnostic.setqflist{open=false}<CR>:FocusQuickfix<CR>',
+      '<cmd>lua get_buffer_diagnostics(false)<CR>:FocusQuickfix<CR>',
+      opts
+    )
+    vim.keymap.set(
+      'n',
+      '<leader>gpd',
+      '<cmd>lua get_buffer_diagnostics(true)<CR>:FocusQuickfix<CR>',
       opts
     )
   end,
