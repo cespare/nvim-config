@@ -64,18 +64,12 @@
 [submodule "pack/plugins/start/vim-dirvish"]
 	path = pack/plugins/start/vim-dirvish
 	url = https://github.com/justinmk/vim-dirvish
-[submodule "pack/plugins/start/vim-cljfmt"]
-	path = pack/plugins/start/vim-cljfmt
-	url = https://github.com/dmac/vim-cljfmt
 [submodule "pack/plugins/start/nvim-lspconfig"]
 	path = pack/plugins/start/nvim-lspconfig
 	url = https://github.com/neovim/nvim-lspconfig
 [submodule "pack/plugins/start/insertlessly"]
 	path = pack/plugins/start/insertlessly
 	url = https://github.com/dahu/Insertlessly
-[submodule "pack/plugins/start/vim-shfmt"]
-	path = pack/plugins/start/vim-shfmt
-	url = git@github.com:z0mbix/vim-shfmt.git
 [submodule "pack/plugins/start/vim-sway"]
 	path = pack/plugins/start/vim-sway
 	url = git@github.com:cespare/vim-sway.git
@@ -85,3 +79,6 @@
 [submodule "pack/plugins/start/treesj"]
 	path = pack/plugins/start/treesj
 	url = https://github.com/Wansmer/treesj
+[submodule "pack/plugins/start/conform.nvim"]
+	path = pack/plugins/start/conform.nvim
+	url = https://github.com/stevearc/conform.nvim.git

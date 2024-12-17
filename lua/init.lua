@@ -1,6 +1,4 @@
 local stringx = require("stringx")
-local treesitter = require("nvim-treesitter.configs")
-local treesj = require("treesj")
 
 -- I don't want diagnostics to show up at all except via the quickfix list.
 vim.diagnostic.config({underline = false, virtual_text = false, signs = false})
@@ -129,6 +127,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 -- Set up nvim-treesitter.
+local treesitter = require("nvim-treesitter.configs")
 treesitter.setup({
   -- The comment parser highlights things like TODO and FIXME.
   ensure_installed = {"go", "comment", "vim", "vimdoc"},
@@ -152,8 +151,55 @@ treesitter.setup({
   },
 })
 
+local treesj = require("treesj")
 treesj.setup({
   use_default_keymaps = false,
 })
 
 vim.keymap.set("n", "<leader>js", treesj.toggle)
+
+-- Set up conform.nvim to provide format-on-save for a few different languages
+-- other than Go. This is simpler to manage than using a bunch of different
+-- language-specific plugins.
+local conform = require("conform")
+conform.setup({
+  format_on_save = {
+    timeout_ms = 500,
+    lsp_format = "fallback",
+  },
+  formatters_by_ft = {
+    python = {"ruff_format"},
+    sh = {"shfmt"},
+    clojure = {"cljfmt"},
+    javascript = {"prettier"},
+    typescript = {"prettier"},
+    css = {"prettier"},
+    less = {"prettier"},
+  },
+  formatters = {
+    cljfmt = {
+      -- Use my cljfmt (github.com/cespare/goclj/cljfmt), not the other one.
+      inherit = false,
+      command = "cljfmt",
+      stdin = true,
+    },
+    shfmt = {
+      inherit = false,
+      command = "shfmt",
+      args = function(_, ctx)
+        local args = { "-filename", "$FILENAME" }
+        local editorconfig = vim.fs.find(".editorconfig", {
+          path = ctx.dirname,
+          upward = true,
+        })
+        local has_editorconfig = editorconfig[1] ~= nil
+        -- If there is an editorconfig, don't pass any args because shfmt will
+        -- apply settings from there when no command line args are passed.
+        if not has_editorconfig then
+          vim.list_extend(args, {"-i", 2, "-ci"})
+        end
+        return args
+      end,
+    },
+  },
+})

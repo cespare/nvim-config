@@ -209,10 +209,6 @@ augroup END
 " Rust
 let g:rustfmt_autosave = 1
 
-" Shell (vim-shfmt)
-let g:shfmt_extra_args = '-i 2 -ci'
-let g:shfmt_fmt_on_save = 1
-
 " Markdown
 augroup markdown
   au!
