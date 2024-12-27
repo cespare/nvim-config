@@ -171,10 +171,12 @@ conform.setup({
     python = {"ruff_format"},
     sh = {"shfmt"},
     clojure = {"cljfmt"},
-    javascript = {"prettier"},
-    typescript = {"prettier"},
-    css = {"prettier"},
-    less = {"prettier"},
+    -- TODO: prettier is too slow.
+    -- Configure it to only run with a key binding, not on save.
+    -- javascript = {"prettier"},
+    -- typescript = {"prettier"},
+    -- css = {"prettier"},
+    -- less = {"prettier"},
   },
   formatters = {
     cljfmt = {
