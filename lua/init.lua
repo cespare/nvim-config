@@ -4,7 +4,7 @@ local stringx = require("stringx")
 vim.lsp.enable({"gopls"})
 
 -- I don't want diagnostics to show up at all except via the quickfix list.
-vim.diagnostic.config({underline = false, virtual_text = false, signs = false})
+vim.diagnostic.config({underline = false, signs = false})
 
 -- Use some monkey-patching to configure all floating windows (mostly used for
 -- LSP features like hover). It's kind of hacky, but apparently this is how it's
