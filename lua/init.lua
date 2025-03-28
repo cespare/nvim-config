@@ -73,6 +73,11 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- works with Neovim+ghostty.)
     -- TODO: Why doesn't this unmapping work?
     -- vim.keymap.del('i', '<C-s>', opts)
+    -- TODO: Signature help always starts with a line like
+    --
+    --   # Signature Help: gopls
+    --
+    -- How do I get rid of that?
     vim.keymap.set('i', '<C-i>', vim.lsp.buf.signature_help, opts)
     -- Add other custom commands:
     vim.keymap.set('n', 'grh', vim.lsp.buf.document_highlight, opts)
