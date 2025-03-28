@@ -158,12 +158,8 @@ nnoremap <silent> <leader>q :bp\|bd #<CR>
 " No colon in command mode to enter an ex command; just use space
 nnoremap <Space> :
 
-" Shortcuts for using the quickfix window (partly copied from unimpaired):
-nnoremap ]q :cnext<CR>
-nnoremap [q :cprevious<CR>
-nnoremap [Q :cfirst<CR>
-nnoremap ]Q :clast<CR>
-nnoremap <leader>x :cclose<CR>
+" Quickly close the quickfix window or location list.
+nnoremap <leader>x :cclose\|lclose<CR>
 
 "" Shortcuts for custom commands:
 noremap <leader>m :Markdownd<CR>
