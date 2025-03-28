@@ -12,6 +12,9 @@ vim.diagnostic.config({underline = false, virtual_text = false, signs = false})
 local prev_util_open_floating_preview = vim.lsp.util.open_floating_preview
 function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
   opts = opts or {}
+  -- Note that in neovim 0.11.0+, the following can be set using
+  -- vim.o.winborder = "rounded".
+  -- However, the other options cannot be easily configured.
   opts.border = opts.border or 'rounded'
   opts.max_width = opts.max_width or 80
   local bufnr, winnr = prev_util_open_floating_preview(contents, syntax, opts, ...)
