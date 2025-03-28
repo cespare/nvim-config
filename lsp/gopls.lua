@@ -1,6 +1,3 @@
-local lspconfig = require('lspconfig')
-local lcutil = require('lspconfig/util')
-
 -- Turn off markdown in hover responses. This isn't handled correctly by nvim
 -- and it displays escaping characters -- for example, this markdown:
 --
@@ -13,12 +10,29 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.hover.contentFormat = {"plaintext"}
 capabilities.textDocument.signatureHelp.documentationFormat = {"plaintext"}
 
-lspconfig.gopls.setup{
+function format_go()
+  local params = vim.lsp.util.make_range_params(0, "utf-8")
+  params.context = {only = {"source.organizeImports"}}
+  local timeout_ms = 1000
+  local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, timeout)
+  for _, res in pairs(result or {}) do
+    for _, r in pairs(res.result or {}) do
+      if r.edit then
+        vim.lsp.util.apply_workspace_edit(r.edit, "utf-8")
+      end
+    end
+  end
+  vim.lsp.buf.format({async = false})
+end
+
+vim.api.nvim_create_autocmd("BufWritePre", {pattern = "*.go", callback = format_go})
+
+return {
   -- Debugging:
-  -- cmd = {'gopls', '-logfile', '/tmp/gopls.log', '-rpc.trace'},
-  cmd = {'gopls'},
+  -- cmd = {"gopls", "-logfile", "/tmp/gopls.log", "-rpc.trace"},
+  cmd = {"gopls"},
+  root_markers = {"go.mod", "go.work"},
   filetypes = {"go", "gomod", "gowork"},
-  root_dir = lcutil.root_pattern("go.work", "go.mod"),
   capabilities = capabilities,
   settings = {
     gopls = {
@@ -32,18 +46,3 @@ lspconfig.gopls.setup{
     },
   },
 }
-
-function organize_imports(timeout_ms)
-  local params = vim.lsp.util.make_range_params()
-  params.context = {only = {'source.organizeImports'}}
-  local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params, timeout_ms)
-  for _, res in pairs(result or {}) do
-    for _, r in pairs(res.result or {}) do
-      if r.edit then
-        vim.lsp.util.apply_workspace_edit(r.edit, "utf-8")
-      else
-        vim.lsp.buf.execute_command(r.command)
-      end
-    end
-  end
-end

@@ -1,5 +1,8 @@
 local stringx = require("stringx")
 
+-- Enable language servers.
+vim.lsp.enable({"gopls"})
+
 -- I don't want diagnostics to show up at all except via the quickfix list.
 vim.diagnostic.config({underline = false, virtual_text = false, signs = false})
 

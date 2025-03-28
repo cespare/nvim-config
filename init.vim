@@ -194,11 +194,8 @@ nnoremap cpo :Eval<CR>
 " }}}
 " ------------------------- Language-specific Settings --------------------- {{{
 " Go
-lua require("gopls")
 augroup go
   au!
-  au BufWritePre *.go lua vim.lsp.buf.format()
-  au BufWritePre *.go lua organize_imports(1000)
   au FileType go,asm,gomod setlocal noexpandtab
   au FileType go,asm,gomod setlocal ts=8
   au FileType go,asm,gomod setlocal sw=8
