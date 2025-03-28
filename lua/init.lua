@@ -54,10 +54,27 @@ end
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('UserLspConfig', {}),
   callback = function(ev)
-    vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
-
     local opts = {buffer = ev.buf, silent = true}
+    -- Neovim sets K as the default for the hover action, but we disable K
+    -- (because it brings up a man page) in init.vim. Re-enable it here.
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+    -- Note the other default bindings (see https://neovim.io/doc/user/lsp.html):
+    -- "grn" is mapped in Normal mode to vim.lsp.buf.rename()
+    -- "gra" is mapped in Normal and Visual mode to vim.lsp.buf.code_action()
+    -- "grr" is mapped in Normal mode to vim.lsp.buf.references()
+    -- "gri" is mapped in Normal mode to vim.lsp.buf.implementation()
+    -- "gO" is mapped in Normal mode to vim.lsp.buf.document_symbol()
+    -- CTRL-S is mapped in Insert mode to vim.lsp.buf.signature_help()
+    -- This one is a bit hard to type, so let's replace it with C-i.
+    -- (Note that this requires terminal support to distinguish from Tab. It
+    -- works with Neovim+ghostty.)
+    -- TODO: Why doesn't this unmapping work?
+    -- vim.keymap.del('i', '<C-s>', opts)
+    vim.keymap.set('i', '<C-i>', vim.lsp.buf.signature_help, opts)
+    -- Add other custom commands:
+    vim.keymap.set('n', 'grh', vim.lsp.buf.document_highlight, opts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+
     -- Make the existing <leader>nn shortcut clear both reference highlights and
     -- normal search highlights.
     vim.keymap.set(
@@ -67,28 +84,16 @@ vim.api.nvim_create_autocmd('LspAttach', {
       opts
     )
 
-    vim.keymap.set('n', '<leader>gh', vim.lsp.buf.document_highlight, opts)
-    -- TODO: C-i would be a nicer mapping here, but C-i and tab are
-    -- indistinguishable by terminals historically. Neovim and ghostty *should*
-    -- both support the kitty keyboard protocol, but tmux doesn't yet, and even
-    -- without tmux I can't seem to get the C-i mapping working without breaking
-    -- tab.
-    vim.keymap.set('i', '<C-f>', vim.lsp.buf.signature_help, opts)
-    vim.keymap.set('n', '<leader>gi', vim.lsp.buf.hover, opts)
-    vim.keymap.set('n', '<leader>gf', vim.lsp.buf.references, opts)
-    vim.keymap.set('n', '<leader>gr', vim.lsp.buf.rename, opts)
-    vim.keymap.set('n', '<leader>ga', vim.lsp.buf.code_action, opts)
-
     -- I only want to show diagnostics via the quickfix list, and only when
-    -- requested. In particular, <leader>gd should populate the quickfix list
-    -- and then open and focus it, but only if there are diagnostics to show.
+    -- requested. In particular, grd should populate the quickfix list and then
+    -- open and focus it, but only if there are diagnostics to show.
     -- LSP servers like gopls tend to report diagnostics for the whole project
     -- (module in the gopls case), not just for the files that are open. That
     -- can be useful, but can also be annoying if working in a module that
-    -- contains some unrelated, broken code. Therefore, the main <leader>gd
-    -- binding filters just the diagnostics for the currently-open buffers and a
-    -- second binding, <leader>gpd (mnemonic: "project diagnostics"), shows all
-    -- the diagnostics.
+    -- contains some unrelated, broken code. Therefore, the main grd binding
+    -- filters just the diagnostics for the currently-open buffers and a second
+    -- binding, gpd (mnemonic: "project diagnostics"), shows all the
+    -- diagnostics.
     --
     -- Additionally, by default, simply using vim.diagnostic.seqflist populates
     -- the diagnostics in a nondeterministic order, so my versions also sort
@@ -116,13 +121,13 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
     vim.keymap.set(
       'n',
-      '<leader>gd',
+      'grd',
       '<cmd>lua get_buffer_diagnostics(false)<CR>:FocusQuickfix<CR>',
       opts
     )
     vim.keymap.set(
       'n',
-      '<leader>gpd',
+      'gpd',
       '<cmd>lua get_buffer_diagnostics(true)<CR>:FocusQuickfix<CR>',
       opts
     )
