@@ -79,6 +79,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
     --
     -- How do I get rid of that?
     vim.keymap.set('i', '<C-i>', vim.lsp.buf.signature_help, opts)
+    -- I'm not quite sure why, but binding <C-i> will also trigger on <Tab>
+    -- (interfering with snipmate) unless we unbind <Tab> explicitly.
+    vim.keymap.del('i', '<Tab>', opts)
     -- Add other custom commands:
     vim.keymap.set('n', 'grh', vim.lsp.buf.document_highlight, opts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
