@@ -37,6 +37,7 @@ return {
   settings = {
     gopls = {
       linksInHover = false,
+      experimentalPostfixCompletions = false,
       gofumpt = true,
       ['local'] = 'liftoff.io/',
       analyses = {
