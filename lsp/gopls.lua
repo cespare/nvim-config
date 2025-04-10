@@ -43,6 +43,7 @@ return {
       analyses = {
         unusedparams = false,
         infertypeargs = false,
+        modernize = false,
       },
     },
   },
