@@ -228,3 +228,12 @@ conform.setup({
 -- Set up oil.nvim.
 require("oil").setup()
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+
+-- Define a Browse command for fugitive to use.
+vim.api.nvim_create_user_command(
+  "Browse",
+  function (opts)
+    vim.fn.system({"xdg-open", opts.fargs[1]})
+  end,
+  {nargs = 1}
+)
