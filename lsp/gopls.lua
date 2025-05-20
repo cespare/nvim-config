@@ -44,6 +44,7 @@ return {
         unusedparams = false,
         infertypeargs = false,
         modernize = false,
+        deprecated = false,
       },
     },
   },
