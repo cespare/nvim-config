@@ -170,9 +170,9 @@ noremap <leader>m :Markdownd<CR>
 noremap <leader>l :ToggleColorColumn<CR>
 
 "" Git blame shortcut (fugitive)
-noremap <leader>bl :Git blame<CR>
+nnoremap <leader>bl :Git blame<CR>
 " Open GitHub page in browser (fugitive/rhubarb)
-noremap <leader>bb :GBrowse<CR>
+nnoremap <leader>bb :.GBrowse<CR>
 
 " Quick fold toggling
 noremap <leader>f za
