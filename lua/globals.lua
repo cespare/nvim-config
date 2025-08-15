@@ -5,12 +5,6 @@ function echom(...)
   vim.api.nvim_echo({{table.concat({...}, " ")}}, true, {})
 end
 
-function delete_trailing_whitespace()
-  local pos = a.nvim_win_get_cursor(0)
-  vim.cmd([[keeppatterns %s/\s\+$//e]])
-  a.nvim_win_set_cursor(0, pos)
-end
-
 function maybe_insert_closing_brace()
   local no = '\n'
   local n, col = unpack(a.nvim_win_get_cursor(0))

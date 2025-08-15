@@ -1,6 +1,31 @@
 local stringx = require("stringx")
 
--- Enable language servers.
+--------------------------------- Keymaps --------------------------------------
+
+vim.keymap.set(
+  "n",
+  "<leader>$",
+  function()
+    local pos = vim.api.nvim_win_get_cursor(0)
+    vim.cmd([[keeppatterns %s/\s\+$//e]])
+    vim.api.nvim_win_set_cursor(0, pos)
+  end,
+  { desc = "Delete trailing whitespace" }
+)
+
+vim.keymap.set(
+  "n",
+  "<leader>x",
+  function()
+    if vim.bo.buftype == "quickfix" then vim.cmd("wincmd p") end
+    vim.cmd("silent! lclose")
+    vim.cmd("silent! cclose")
+  end,
+  { desc = "Close the quickfix/loclist and jump back if inside" }
+)
+
+----------------------- Language servers ---------------------------------------
+
 vim.lsp.enable({"gopls"})
 
 -- I don't want diagnostics to show up at all except via the quickfix list.
@@ -144,6 +169,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
     )
   end,
 })
+
+------------------------------ Other plugins -----------------------------------
 
 -- Set up nvim-treesitter.
 local treesitter = require("nvim-treesitter.configs")

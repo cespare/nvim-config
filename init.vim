@@ -139,9 +139,6 @@ inoremap <expr> <C-K> pumvisible() ? '<C-P>' : ''
 " Quickly un-highlight search terms
 noremap <leader>nn :noh<CR>
 
-" Quickly delete trailing whitespace (with cursor position restore)
-nnoremap <leader>$ :lua delete_trailing_whitespace()<CR>
-
 " Make Y be like C and D (yank to end of line), a mapping so obvious it's
 " recommended by :help Y.
 nnoremap Y y$
@@ -161,9 +158,6 @@ nnoremap <silent> <leader>q :bp\|bd #<CR>
 
 " No colon in command mode to enter an ex command; just use space
 nnoremap <Space> :
-
-" Quickly close the quickfix window or location list.
-nnoremap <leader>x :cclose\|lclose<CR>
 
 "" Shortcuts for custom commands:
 noremap <leader>m :Markdownd<CR>
