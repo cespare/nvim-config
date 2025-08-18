@@ -42,6 +42,7 @@ return {
       ['local'] = 'liftoff.io/',
       analyses = {
         unusedparams = false,
+        unusedfunc = false,
         infertypeargs = false,
         modernize = false,
         deprecated = false,
