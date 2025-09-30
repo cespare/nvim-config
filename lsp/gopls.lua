@@ -46,6 +46,8 @@ return {
         infertypeargs = false,
         modernize = false,
         deprecated = false,
+        QF1002 = false,
+        QF1003 = false,
       },
     },
   },
