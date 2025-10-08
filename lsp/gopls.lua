@@ -48,6 +48,7 @@ return {
         deprecated = false,
         QF1002 = false,
         QF1003 = false,
+        QF1004 = false,
       },
     },
   },
