@@ -170,6 +170,18 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
+vim.api.nvim_create_user_command(
+  "RestartLSP",
+  function()
+    vim.cmd("write")
+    for _, c in ipairs(vim.lsp.get_clients({bufnr = 0})) do
+      c:stop()
+    end
+    vim.cmd("edit")
+  end,
+  {desc = "Restart LSP clients"}
+)
+
 ------------------------------ Other plugins -----------------------------------
 
 -- Set up nvim-treesitter.
