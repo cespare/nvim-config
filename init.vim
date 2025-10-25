@@ -78,7 +78,6 @@ lua require("init")
 " fzf
 nnoremap ; :Buffers<CR>
 nnoremap <leader>d :Files<CR>
-let g:fzf_files_options = '--preview "cat {}"'
 
 " rg (via vim-ripgrep)
 nnoremap <leader>rr :Rg<Space>
