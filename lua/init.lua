@@ -170,6 +170,32 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
+vim.api.nvim_create_user_command("RestartLSP", function()
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_loaded(buf) then
+      vim.api.nvim_buf_call(buf, function()
+        vim.cmd("write")
+      end)
+    end
+  end
+
+  for _, client in pairs(vim.lsp.get_clients()) do
+    client.stop(true)
+  end
+
+  vim.defer_fn(function()
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      if vim.api.nvim_buf_is_loaded(buf) then
+        vim.api.nvim_buf_call(buf, function()
+          vim.cmd("edit")
+        end)
+      end
+    end
+  end, 100)
+
+  vim.notify("Restarted LSP and reloaded all open buffers", vim.log.levels.INFO)
+end, { desc = "Restart LSP and reload all open buffers" })
+
 ------------------------------ Other plugins -----------------------------------
 
 -- Set up nvim-treesitter.
