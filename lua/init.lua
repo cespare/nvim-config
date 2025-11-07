@@ -171,29 +171,73 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 vim.api.nvim_create_user_command("RestartLSP", function()
+  -- Collect target buffers.
+  local bufs = {}
   for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-    if vim.api.nvim_buf_is_loaded(buf) then
-      vim.api.nvim_buf_call(buf, function()
-        vim.cmd("write")
-      end)
+    if vim.api.nvim_buf_is_loaded(buf)
+      and vim.fn.buflisted(buf) == 1
+      and vim.bo[buf].buftype == ""
+      and vim.api.nvim_buf_get_name(buf) ~= ""
+    then
+      table.insert(bufs, buf)
     end
   end
 
-  for _, client in pairs(vim.lsp.get_clients()) do
-    client.stop(true)
+  -- Save modified files.
+  for _, buf in ipairs(bufs) do
+    vim.api.nvim_buf_call(buf, function()
+      if vim.bo.modifiable and not vim.bo.readonly then
+        pcall(vim.cmd, "silent keepalt update")
+      end
+    end)
   end
 
+  -- Group buffers by (client name, root dir) and stash configs.
+  local groups = {}
+  for _, buf in ipairs(bufs) do
+    for _, c in ipairs(vim.lsp.get_clients({bufnr=buf})) do
+      if c.config and c.name ~= "" then
+        local key = string.format("%s|%s", c.name, c.config.root_dir)
+        groups[key] = groups[key] or {config = vim.deepcopy(c.config), bufs = {}}
+        table.insert(groups[key].bufs, buf)
+      end
+    end
+  end
+
+  -- Stop existing clients.
+  for _, c in pairs(vim.lsp.get_clients()) do
+    c.stop(true)
+  end
+
+  -- Start new clients and reattach them.
   vim.defer_fn(function()
-    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    for _, g in pairs(groups) do
+      local b = g.bufs[1]
+      local client_id
+      vim.api.nvim_buf_call(b, function()
+        vim.cmd("silent! filetype detect")
+        client_id = vim.lsp.start(g.config)
+      end)
+
+      if client_id then
+        for i = 2, #g.bufs do
+          local b = g.bufs[i]
+          if vim.api.nvim_buf_is_loaded(b) then
+            vim.lsp.buf_attach_client(b, client_id)
+          end
+        end
+      end
+    end
+
+    -- Reconcile on-disk changes.
+    for _, buf in ipairs(bufs) do
       if vim.api.nvim_buf_is_loaded(buf) then
         vim.api.nvim_buf_call(buf, function()
-          vim.cmd("edit")
+          pcall(vim.cmd, "silent checktime")
         end)
       end
     end
   end, 100)
-
-  vim.notify("Restarted LSP and reloaded all open buffers", vim.log.levels.INFO)
 end, { desc = "Restart LSP and reload all open buffers" })
 
 ------------------------------ Other plugins -----------------------------------
