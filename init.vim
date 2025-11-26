@@ -1,3 +1,16 @@
+" ---------------------------- Version Check ------------------------------- {{{
+" I use some fairly recent features, so just exit quickly if my nvim is too old.
+function! s:CheckVersion()
+  if !has("nvim-0.11.5")
+    echoerr "WARNING: Neovim too old."
+  endif
+endfunction
+
+augroup VersionCheck
+  autocmd!
+  autocmd VimEnter * call s:CheckVersion()
+augroup END
+
 " ---------------------------- Basic Settings ------------------------------ {{{
 " Text-wrapping stuff.
 set textwidth=80
