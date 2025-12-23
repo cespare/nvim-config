@@ -13,6 +13,23 @@ vim.keymap.set(
   { desc = "Delete trailing whitespace" }
 )
 
+vim.keymap.set("n", "<leader>f", "za", { desc = "Toggle fold under cursor" })
+vim.keymap.set(
+  "n",
+  "<leader>F",
+  function()
+    -- Toggle between closing all folds (zM) and opening all folds (zR).
+    -- If foldlevel is 0, all folds are closed, so open them.
+    -- Otherwise, close all folds.
+    if vim.wo.foldlevel == 0 then
+      vim.cmd("normal! zR")
+    else
+      vim.cmd("normal! zM")
+    end
+  end,
+  { desc = "Toggle all folds open/closed" }
+)
+
 vim.keymap.set(
   "n",
   "<leader>x",
@@ -23,49 +40,6 @@ vim.keymap.set(
   end,
   { desc = "Close the quickfix/loclist and jump back if inside" }
 )
-
-local function indent_todo_tree(op)
-  local pos = vim.api.nvim_win_get_cursor(0)
-  local row, old_col = pos[1], pos[2]
-  local old_indent = vim.fn.indent(row)
-
-  local last_row = vim.fn.line("$")
-  local end_row = row
-
-  for i = row + 1, last_row do
-    local line = vim.fn.getline(i)
-    local indent = vim.fn.indent(i)
-    if line == "" or indent <= old_indent then
-      break
-    end
-    end_row = i
-  end
-
-  local cmd = string.format("%d,%d%s", row, end_row, op)
-  vim.cmd(cmd)
-
-  -- Restore cursor position.
-  local new_indent = vim.fn.indent(row)
-  local new_col = math.max(0, old_col + new_indent - old_indent)
-  vim.api.nvim_win_set_cursor(0, { row, new_col })
-end
-
-local text_group = vim.api.nvim_create_augroup("TextFileConfig", { clear = true })
-
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "text",
-  group = group,
-  callback = function()
-    vim.keymap.set("n", "<C-.>", function() indent_todo_tree(">") end, {
-      buffer = true,
-      desc = "Indent todo subtree"
-    })
-    vim.keymap.set("n", "<C-,>", function() indent_todo_tree("<") end, {
-      buffer = true,
-      desc = "Unindent todo subtree"
-    })
-  end,
-})
 
 ----------------------- Language servers ---------------------------------------
 

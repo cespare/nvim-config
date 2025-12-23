@@ -181,9 +181,6 @@ nnoremap <leader>bl :Git blame<CR>
 " Open GitHub page in browser (fugitive/rhubarb)
 nnoremap <leader>bb :.GBrowse<CR>
 
-" Quick fold toggling
-noremap <leader>f za
-
 " Get rid of Ex mode and map a useful command for reflowing text
 nnoremap Q gqap
 
