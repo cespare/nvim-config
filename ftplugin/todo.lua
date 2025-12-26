@@ -7,6 +7,14 @@ vim.opt_local.foldlevel = 0 -- Start with all folds closed.
 -- Remove the trailing fill characters (cdots) after fold lines.
 vim.opt_local.fillchars:append({ fold = " " })
 
+-- Trigger fold recalculation when leaving insert mode.
+vim.api.nvim_create_autocmd("InsertLeave", {
+  buffer = 0,
+  callback = function()
+    vim.wo.foldmethod = vim.wo.foldmethod
+  end,
+})
+
 function _G.todo_foldexpr()
   local line = vim.fn.getline(vim.v.lnum)
 
