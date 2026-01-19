@@ -79,3 +79,6 @@
 [submodule "pack/plugins/start/oil.nvim"]
 	path = pack/plugins/start/oil.nvim
 	url = https://github.com/stevearc/oil.nvim.git
+[submodule "pack/plugins/start/vim-cue"]
+	path = pack/plugins/start/vim-cue
+	url = https://github.com/cue-lang/vim-cue.git
