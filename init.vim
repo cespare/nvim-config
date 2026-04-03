@@ -213,7 +213,7 @@ let g:rustfmt_autosave = 1
 " Markdown
 augroup markdown
   au!
-  au FileType markdown setlocal comments=b:*,b:-,b:+,n:>h
+  au FileType markdown setlocal comments=n:>
 augroup END
 " This is a recent vim-markdown addition -- without overriding this setting, it
 " sets tabstop (and friends) to 4.
