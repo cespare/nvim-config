@@ -99,13 +99,6 @@ nnoremap <leader>rt :Rg -g '!*_test.go'<Space>
 " easy-align settings
 vnoremap <leader>a :EasyAlign<Enter>
 
-" SnipMate won't set up its bindings if <Tab> is already bound. Recent neovim
-" versions bind these keys by default (they fall back to <Tab> if the built-in
-" snippet manager isn't active, but snipmate doesn't know that). So just unbind
-" these keys here before SnipMate is loaded.
-iunmap <Tab>
-iunmap <S-Tab>
-
 " Insertlessly
 let g:insertlessly_insert_spaces = 0
 let g:insertlessly_cleanup_trailing_ws = 0

@@ -121,9 +121,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
     --
     -- How do I get rid of that?
     vim.keymap.set('i', '<C-i>', vim.lsp.buf.signature_help, opts)
-    -- I'm not quite sure why, but binding <C-i> will also trigger on <Tab>
-    -- (interfering with snipmate) unless we unbind <Tab> explicitly.
-    vim.keymap.del('i', '<Tab>', opts)
+    -- The <C-i> mapping above is buffer-local. Most terminals send the same
+    -- byte (0x09) for both <Tab> and <C-i>; Neovim only distinguishes them
+    -- (via the kitty keyboard protocol) when both keys are mapped at the
+    -- same scope. Since our <Tab> snippet mapping is global, we must also
+    -- bind it buffer-locally here so that the protocol kicks in and <Tab>
+    -- doesn't get swallowed by the buffer-local <C-i> mapping above.
+    vim.keymap.set('i', '<Tab>', _G.snippet_tab_expand, opts)
+    vim.keymap.set({'i', 's'}, '<S-Tab>', _G.snippet_shift_tab, opts)
     -- Add other custom commands:
     vim.keymap.set('n', 'grh', vim.lsp.buf.document_highlight, opts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
@@ -272,4 +277,56 @@ vim.api.nvim_create_user_command(
     vim.fn.system({"xdg-open", opts.fargs[1]})
   end,
   {nargs = 1}
+)
+
+-------------------------------- Snippets --------------------------------------
+
+-- Snippet expansion using Neovim's built-in vim.snippet, with a snipmate-like
+-- trigger-word + <Tab> workflow. Snippets themselves live in lua/snippets.lua.
+local snippets = require("snippets")
+
+local function tab_expand()
+  -- If a snippet is currently active, jump to the next placeholder.
+  if vim.snippet.active({ direction = 1 }) then
+    return vim.snippet.jump(1)
+  end
+  -- Otherwise, see if the word before the cursor is a snippet trigger for
+  -- the current filetype.
+  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  local before = vim.api.nvim_get_current_line():sub(1, col)
+  local word = before:match("([%w_]+)$")
+  local body = word and (snippets[vim.bo.filetype] or {})[word]
+  if body then
+    -- Delete the trigger word, then expand.
+    vim.api.nvim_buf_set_text(0, row - 1, col - #word, row - 1, col, { "" })
+    vim.snippet.expand(body)
+    return
+  end
+  -- Fall through: insert a literal Tab.
+  vim.api.nvim_feedkeys(vim.keycode("<Tab>"), "n", false)
+end
+
+local function shift_tab()
+  if vim.snippet.active({ direction = -1 }) then
+    return vim.snippet.jump(-1)
+  end
+  vim.api.nvim_feedkeys(vim.keycode("<S-Tab>"), "n", false)
+end
+
+-- Expose so the LspAttach callback can also bind these buffer-locally; see
+-- the comment there for why that's necessary.
+_G.snippet_tab_expand = tab_expand
+_G.snippet_shift_tab = shift_tab
+
+vim.keymap.set(
+  "i",
+  "<Tab>",
+  tab_expand,
+  { desc = "Expand snippet, jump to next placeholder, or insert Tab" }
+)
+vim.keymap.set(
+  { "i", "s" },
+  "<S-Tab>",
+  shift_tab,
+  { desc = "Jump to previous snippet placeholder, or insert Shift-Tab" }
 )

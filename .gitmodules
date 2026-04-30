@@ -46,15 +46,6 @@
 [submodule "pack/plugins/start/vim-less"]
 	path = pack/plugins/start/vim-less
 	url = https://github.com/groenewege/vim-less
-[submodule "pack/plugins/start/vim-snipmate"]
-	path = pack/plugins/start/vim-snipmate
-	url = https://github.com/garbas/vim-snipmate
-[submodule "pack/plugins/start/vim-addon-mw-utils"]
-	path = pack/plugins/start/vim-addon-mw-utils
-	url = https://github.com/MarcWeber/vim-addon-mw-utils
-[submodule "pack/plugins/start/tlib"]
-	path = pack/plugins/start/tlib
-	url = https://github.com/tomtom/tlib_vim
 [submodule "pack/plugins/start/vim-surround"]
 	path = pack/plugins/start/vim-surround
 	url = https://github.com/tpope/vim-surround
