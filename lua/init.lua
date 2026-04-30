@@ -259,29 +259,21 @@ end, { desc = "Restart LSP and reload all open buffers" })
 
 ------------------------------ Other plugins -----------------------------------
 
--- Set up nvim-treesitter.
-local treesitter = require("nvim-treesitter.configs")
-treesitter.setup({
-  -- The comment parser highlights things like TODO and FIXME.
-  ensure_installed = {"go", "comment", "vim", "vimdoc"},
-  sync_install = true,
-  auto_install = false,
+-- Set up nvim-treesitter. This requires tree-sitter (>=0.26.1) and a C compiler.
+local treesitter = require("nvim-treesitter")
+treesitter.setup()
+-- The comment parser highlights things like TODO and FIXME inside comments
+-- (via injection; see queries/lua/injections.scm for the Lua-specific override).
+-- Other parsers we use (c, lua, markdown, markdown_inline, query, vim, vimdoc)
+-- ship with Neovim, so they don't need to be listed here.
+-- This call is async and a no-op when the listed parsers are already installed.
+treesitter.install({"go", "comment"})
 
-  highlight = {
-    enable = true,
-    disable = function (lang, bufnr) return lang ~= "go" end,
-    additional_vim_regex_highlighting = false,
-  },
-
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = "<C-space>",
-      node_incremental = "<C-space>",
-      scope_incremental = false,
-      node_decremental = "<bs>",
-    },
-  },
+-- Enable treesitter highlighting only for Go.
+-- The `comment` parser is attached automatically as an injected language.
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "go",
+  callback = function() vim.treesitter.start() end,
 })
 
 local treesj = require("treesj")
