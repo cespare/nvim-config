@@ -1,7 +1,7 @@
 " ---------------------------- Version Check ------------------------------- {{{
 " I use some fairly recent features, so just exit quickly if my nvim is too old.
 function! s:CheckVersion()
-  if !has("nvim-0.11.5")
+  if !has("nvim-0.12.2")
     echoerr "WARNING: Neovim too old."
   endif
 endfunction
