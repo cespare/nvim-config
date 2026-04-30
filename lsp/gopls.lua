@@ -1,15 +1,3 @@
--- Turn off markdown in hover responses. This isn't handled correctly by nvim
--- and it displays escaping characters -- for example, this markdown:
---
---   See the documentation for \[Unmarshal] for details about
---
--- The [ is escaped because otherwise "[Unmarshal]" would be interpreted as a
--- link reference in Markdown. But nvim just displays the \ as-is.
--- TODO: Figure this out -- ISTM that nvim ought to handle this.
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.hover.contentFormat = {"plaintext"}
-capabilities.textDocument.signatureHelp.documentationFormat = {"plaintext"}
-
 function format_go()
   -- Synchronously run gopls's source.organizeImports code action, then format.
   -- We drive the request ourselves (via the client-method API) instead of
@@ -36,7 +24,6 @@ return {
   cmd = {"gopls"},
   root_markers = {"go.mod", "go.work"},
   filetypes = {"go", "gomod", "gowork"},
-  capabilities = capabilities,
   settings = {
     gopls = {
       linksInHover = false,

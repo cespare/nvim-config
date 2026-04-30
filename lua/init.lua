@@ -51,12 +51,44 @@ vim.diagnostic.config({underline = false, signs = false})
 -- Use rounded borders for all floating windows (hover, signature help, etc.).
 vim.o.winborder = "rounded"
 
--- Other desired options (max_width, linebreak) aren't covered by winborder,
--- so use monkey-patching around open_floating_preview for those.
+-- Monkey-patch open_floating_preview to:
+--
+-- 1. Set my preferred sizing/wrapping options (max_width, linebreak), since
+--    winborder doesn't cover those.
+--
+-- 2. Pre-process markdown content from the LSP server before it's shown.
+--    Both fixups are workarounds for the fact that nvim renders LSP markdown by
+--    displaying the raw source text with treesitter-driven conceal extmarks on
+--    top -- there's no real markdown rendering pass.
+--
+--    a. Strip URLs from inline links: `[text](url)` -> `[text]`. Gopls emits
+--       these for every doc reference
+--       (e.g. `[Marshaler.MarshalJSON](file:///.../encode.go#237,2)`),
+--       and even though the URL portion is concealed visually, the buffer still
+--       contains all those bytes. nvim's wrap+linebreak engine doesn't handle
+--       wide concealed regions correctly: when a wrap falls inside one, the
+--       literal space following the concealed region ends up at the start of
+--       the next visual line instead of being absorbed at the end of the
+--       previous one. Reducing the link to `[text]` (a CommonMark shortcut
+--       link, with only the two brackets concealed) makes the concealed regions
+--       tiny and the glitch effectively disappears.
+--
+--    b. Resolve CommonMark backslash escapes: `\X` -> `X` when X is ASCII
+--       punctuation. Gopls emits `\[Foo]` to keep `[Foo]` from being parsed as
+--       a link reference, and `\<` etc. for literal angle brackets. nvim's
+--       markdown_inline treesitter query highlights `backslash_escape` nodes
+--       but doesn't conceal them, so the leading `\` shows verbatim.
 local prev_util_open_floating_preview = vim.lsp.util.open_floating_preview
 function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
   opts = opts or {}
   opts.max_width = opts.max_width or 80
+  if syntax == "markdown" and type(contents) == "table" then
+    for i, line in ipairs(contents) do
+      line = line:gsub("(%b[])%b()", "%1")  -- inline link -> shortcut link
+      line = line:gsub("\\(%p)", "%1")      -- backslash-escape -> literal
+      contents[i] = line
+    end
+  end
   local bufnr, winnr = prev_util_open_floating_preview(contents, syntax, opts, ...)
   vim.wo[winnr].linebreak = true
   return bufnr, winnr
