@@ -113,11 +113,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- works with Neovim+ghostty.)
     -- TODO: Why doesn't this unmapping work?
     -- vim.keymap.del('i', '<C-s>', opts)
-    -- TODO: Signature help always starts with a line like
-    --
-    --   # Signature Help: gopls
-    --
-    -- How do I get rid of that?
     vim.keymap.set('i', '<C-i>', vim.lsp.buf.signature_help, opts)
     -- The <C-i> mapping above is buffer-local. Most terminals send the same
     -- byte (0x09) for both <Tab> and <C-i>; Neovim only distinguishes them
