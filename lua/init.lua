@@ -275,14 +275,9 @@ conform.setup({
       command = "shfmt",
       args = function(_, ctx)
         local args = { "-filename", "$FILENAME" }
-        local editorconfig = vim.fs.find(".editorconfig", {
-          path = ctx.dirname,
-          upward = true,
-        })
-        local has_editorconfig = editorconfig[1] ~= nil
-        -- If there is an editorconfig, don't pass any args because shfmt will
-        -- apply settings from there when no command line args are passed.
-        if not has_editorconfig then
+        -- If there is an editorconfig, don't pass any other args because shfmt
+        -- will apply settings from there when no command line args are passed.
+        if not vim.fs.root(ctx.dirname, ".editorconfig") then
           vim.list_extend(args, {"-i", 2, "-ci"})
         end
         return args
