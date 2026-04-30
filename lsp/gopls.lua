@@ -11,14 +11,17 @@ capabilities.textDocument.hover.contentFormat = {"plaintext"}
 capabilities.textDocument.signatureHelp.documentationFormat = {"plaintext"}
 
 function format_go()
-  local params = vim.lsp.util.make_range_params(0, "utf-8")
-  params.context = {only = {"source.organizeImports"}}
-  local timeout_ms = 1000
-  local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, timeout)
-  for _, res in pairs(result or {}) do
-    for _, r in pairs(res.result or {}) do
+  -- Synchronously run gopls's source.organizeImports code action, then format.
+  -- We drive the request ourselves (via the client-method API) instead of
+  -- using vim.lsp.buf.code_action({apply = true}), because in nvim 0.12 that
+  -- path still calls the deprecated dot-form client.request_sync internally.
+  for _, client in ipairs(vim.lsp.get_clients({bufnr = 0, name = "gopls"})) do
+    local params = vim.lsp.util.make_range_params(0, client.offset_encoding)
+    params.context = {only = {"source.organizeImports"}, diagnostics = {}}
+    local result = client:request_sync("textDocument/codeAction", params, 1000, 0)
+    for _, r in pairs((result or {}).result or {}) do
       if r.edit then
-        vim.lsp.util.apply_workspace_edit(r.edit, "utf-8")
+        vim.lsp.util.apply_workspace_edit(r.edit, client.offset_encoding)
       end
     end
   end
