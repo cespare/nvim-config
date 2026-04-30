@@ -125,6 +125,11 @@ function sort_qflist_items(d0, d1)
   return false
 end
 
+-- Remove nvim's default global <C-s> -> vim.lsp.buf.signature_help() mapping
+-- (set in runtime/lua/vim/_core/defaults.lua for modes {i, s}). We bind C-i
+-- instead in the LspAttach callback below.
+pcall(vim.keymap.del, {'i', 's'}, '<C-s>')
+
 -- Set up LSP key bindings.
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('UserLspConfig', {}),
@@ -139,12 +144,11 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- "grr" is mapped in Normal mode to vim.lsp.buf.references()
     -- "gri" is mapped in Normal mode to vim.lsp.buf.implementation()
     -- "gO" is mapped in Normal mode to vim.lsp.buf.document_symbol()
-    -- CTRL-S is mapped in Insert mode to vim.lsp.buf.signature_help()
-    -- This one is a bit hard to type, so let's replace it with C-i.
-    -- (Note that this requires terminal support to distinguish from Tab. It
-    -- works with Neovim+ghostty.)
-    -- TODO: Why doesn't this unmapping work?
-    -- vim.keymap.del('i', '<C-s>', opts)
+    -- C-s is mapped in Insert+Select mode to vim.lsp.buf.signature_help();
+    -- we replace it with C-i below (and unmap the default at top level, since
+    -- the default is a global mapping rather than buffer-local).
+    -- (Note that <C-i> requires terminal support to distinguish it from Tab.
+    -- It works with Neovim+ghostty.)
     vim.keymap.set('i', '<C-i>', vim.lsp.buf.signature_help, opts)
     -- The <C-i> mapping above is buffer-local. Most terminals send the same
     -- byte (0x09) for both <Tab> and <C-i>; Neovim only distinguishes them
