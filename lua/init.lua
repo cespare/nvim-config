@@ -48,19 +48,17 @@ vim.lsp.enable({"gopls"})
 -- I don't want diagnostics to show up at all except via the quickfix list.
 vim.diagnostic.config({underline = false, signs = false})
 
--- Use some monkey-patching to configure all floating windows (mostly used for
--- LSP features like hover). It's kind of hacky, but apparently this is how it's
--- done.
+-- Use rounded borders for all floating windows (hover, signature help, etc.).
+vim.o.winborder = "rounded"
+
+-- Other desired options (max_width, linebreak) aren't covered by winborder,
+-- so use monkey-patching around open_floating_preview for those.
 local prev_util_open_floating_preview = vim.lsp.util.open_floating_preview
 function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
   opts = opts or {}
-  -- Note that in neovim 0.11.0+, the following can be set using
-  -- vim.o.winborder = "rounded".
-  -- However, the other options cannot be easily configured.
-  opts.border = opts.border or 'rounded'
   opts.max_width = opts.max_width or 80
   local bufnr, winnr = prev_util_open_floating_preview(contents, syntax, opts, ...)
-  vim.api.nvim_win_set_option(winnr, "linebreak", true)
+  vim.wo[winnr].linebreak = true
   return bufnr, winnr
 end
 
