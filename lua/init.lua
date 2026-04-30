@@ -1,5 +1,47 @@
 local stringx = require("stringx")
 
+--------------------------------- Plugins --------------------------------------
+
+vim.pack.add({
+  -- fzf
+  "https://github.com/junegunn/fzf",
+  "https://github.com/junegunn/fzf.vim",
+
+  -- search
+  "https://github.com/jremmen/vim-ripgrep",
+
+  -- editing
+  "https://github.com/junegunn/vim-easy-align",
+  "https://github.com/tpope/vim-surround",
+  "https://github.com/tpope/vim-endwise",
+  "https://github.com/farmergreg/vim-lastplace",
+  "https://github.com/dahu/Insertlessly",
+
+  -- ui
+  "https://github.com/vim-airline/vim-airline-themes",
+
+  -- git
+  "https://github.com/tpope/vim-fugitive",
+  "https://github.com/tpope/vim-rhubarb",
+
+  -- file types
+  "https://github.com/cespare/vim-sway",
+  "https://github.com/cespare/vim-toml",
+  "https://github.com/cue-lang/vim-cue",
+  "https://github.com/fidian/hexmode",
+  "https://github.com/groenewege/vim-less",
+  "https://github.com/hail2u/vim-css3-syntax",
+  "https://github.com/othree/html5.vim",
+  "https://github.com/rust-lang/rust.vim",
+  "https://github.com/tpope/vim-fireplace",
+
+  -- treesitter / tooling
+  "https://github.com/nvim-treesitter/nvim-treesitter",
+  "https://github.com/Wansmer/treesj",
+  "https://github.com/stevearc/conform.nvim",
+  "https://github.com/stevearc/oil.nvim",
+})
+
 --------------------------------- Keymaps --------------------------------------
 
 vim.keymap.set(

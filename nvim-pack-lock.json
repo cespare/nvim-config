@@ -1,0 +1,100 @@
+{
+  "plugins": {
+    "Insertlessly": {
+      "rev": "0e7e25186de5c3ddba6807c7538ffbb9518add06",
+      "src": "https://github.com/dahu/Insertlessly"
+    },
+    "conform.nvim": {
+      "rev": "dca1a190aa85f9065979ef35802fb77131911106",
+      "src": "https://github.com/stevearc/conform.nvim"
+    },
+    "fzf": {
+      "rev": "6fefe025461b168eac2546ccba3403b70eb5da16",
+      "src": "https://github.com/junegunn/fzf"
+    },
+    "fzf.vim": {
+      "rev": "b9624aa012ddcbae9e79964bfd30cc1fbe3cf263",
+      "src": "https://github.com/junegunn/fzf.vim"
+    },
+    "hexmode": {
+      "rev": "550cae65fdbd06d61d757dc6fe5a9be5be2e3ef4",
+      "src": "https://github.com/fidian/hexmode"
+    },
+    "html5.vim": {
+      "rev": "485f2cd62162c81e56d8604b4c630f0b5ef69d1f",
+      "src": "https://github.com/othree/html5.vim"
+    },
+    "nvim-treesitter": {
+      "rev": "4916d6592ede8c07973490d9322f187e07dfefac",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter"
+    },
+    "oil.nvim": {
+      "rev": "0fcc83805ad11cf714a949c98c605ed717e0b83e",
+      "src": "https://github.com/stevearc/oil.nvim"
+    },
+    "rust.vim": {
+      "rev": "889b9a7515db477f4cb6808bef1769e53493c578",
+      "src": "https://github.com/rust-lang/rust.vim"
+    },
+    "treesj": {
+      "rev": "5fa4e7ba3517f8fe743bb4488f9e9c7ce83330fc",
+      "src": "https://github.com/Wansmer/treesj"
+    },
+    "vim-airline-themes": {
+      "rev": "77aab8c6cf7179ddb8a05741da7e358a86b2c3ab",
+      "src": "https://github.com/vim-airline/vim-airline-themes"
+    },
+    "vim-css3-syntax": {
+      "rev": "cd85b1ff4f65e9572c473869e08e2bb4f34a94c3",
+      "src": "https://github.com/hail2u/vim-css3-syntax"
+    },
+    "vim-cue": {
+      "rev": "ca1a62cc94f329ab0687d01b599dadaee674c3b2",
+      "src": "https://github.com/cue-lang/vim-cue"
+    },
+    "vim-easy-align": {
+      "rev": "9815a55dbcd817784458df7a18acacc6f82b1241",
+      "src": "https://github.com/junegunn/vim-easy-align"
+    },
+    "vim-endwise": {
+      "rev": "4994afb0cdf956d9a665a14b9c834869e602c396",
+      "src": "https://github.com/tpope/vim-endwise"
+    },
+    "vim-fireplace": {
+      "rev": "5e66509599de92550762cf2681338fc4cd1e71cf",
+      "src": "https://github.com/tpope/vim-fireplace"
+    },
+    "vim-fugitive": {
+      "rev": "3b753cf8c6a4dcde6edee8827d464ba9b8c4a6f0",
+      "src": "https://github.com/tpope/vim-fugitive"
+    },
+    "vim-lastplace": {
+      "rev": "e58cb0df716d3c88605ae49db5c4741db8b48aa9",
+      "src": "https://github.com/farmergreg/vim-lastplace"
+    },
+    "vim-less": {
+      "rev": "6e818d5614d5fc18d95a48c92b89e6db39f9e3d6",
+      "src": "https://github.com/groenewege/vim-less"
+    },
+    "vim-rhubarb": {
+      "rev": "5496d7c94581c4c9ad7430357449bb57fc59f501",
+      "src": "https://github.com/tpope/vim-rhubarb"
+    },
+    "vim-ripgrep": {
+      "rev": "2bb2425387b449a0cd65a54ceb85e123d7a320b8",
+      "src": "https://github.com/jremmen/vim-ripgrep"
+    },
+    "vim-surround": {
+      "rev": "3d188ed2113431cf8dac77be61b842acb64433d9",
+      "src": "https://github.com/tpope/vim-surround"
+    },
+    "vim-sway": {
+      "rev": "68980b76f2da2090b4221dae89fdffd630143651",
+      "src": "https://github.com/cespare/vim-sway"
+    },
+    "vim-toml": {
+      "rev": "da051b7c23bad3c52d18886203c594739780ec09",
+      "src": "https://github.com/cespare/vim-toml"
+    }
+  }
+}
