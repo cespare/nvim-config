@@ -28,6 +28,8 @@ return {
     gopls = {
       linksInHover = false,
       experimentalPostfixCompletions = false,
+      -- Don't use a snippet to complete the function call.
+      completeFunctionCalls = false,
       gofumpt = true,
       ['local'] = 'liftoff.io/',
       analyses = {
