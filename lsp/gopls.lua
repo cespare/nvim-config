@@ -24,12 +24,26 @@ return {
   cmd = {"gopls"},
   root_markers = {"go.mod", "go.work"},
   filetypes = {"go", "gomod", "gowork"},
+  -- Tell gopls we don't support snippet-format completion items. Without this,
+  -- gopls sends completions like `NewScanner($0)` for functions and
+  -- `FieldName: $0` for struct fields, which Neovim 0.12's CompleteDone
+  -- handler expands via vim.snippet.expand. That produces double parens/colons
+  -- when you accept by typing the next character, an off-by-one cursor when
+  -- you accept with <Esc>, and a lingering SnippetTabstop highlight that
+  -- doesn't clear until you exit the snippet session.
+  capabilities = {
+    textDocument = {
+      completion = {
+        completionItem = {
+          snippetSupport = false,
+        },
+      },
+    },
+  },
   settings = {
     gopls = {
       linksInHover = false,
       experimentalPostfixCompletions = false,
-      -- Don't use a snippet to complete the function call.
-      completeFunctionCalls = false,
       gofumpt = true,
       ['local'] = 'liftoff.io/',
       analyses = {
