@@ -111,16 +111,18 @@ lua require("globals")
 " Preview the current markdown file:
 command! Markdownd call jobstart(['markdownd', '-w', @%])
 
-" Toggle colorcolumn
-function! ToggleColorColumn()
-  if &colorcolumn == 0
+" Toggle automatic hard wrapping while typing.
+function! ToggleTextWrapping()
+  if &formatoptions =~# 't'
+    setlocal formatoptions-=t
+    let &colorcolumn = 0
+  else
+    setlocal formatoptions+=t
     " Draw the color column wherever wrapmargin is set.
     let &colorcolumn = &wrapmargin
-  else
-    let &colorcolumn = 0
   endif
 endfunction
-command! ToggleColorColumn call ToggleColorColumn()
+command! ToggleTextWrapping call ToggleTextWrapping()
 
 " After running a command which alters the quickfix window, this function is
 " useful for opening the window (if it's non-empty) and focusing the first
@@ -167,7 +169,7 @@ nnoremap <Space> :
 
 "" Shortcuts for custom commands:
 noremap <leader>m :Markdownd<CR>
-noremap <leader>l :ToggleColorColumn<CR>
+noremap <leader>l :ToggleTextWrapping<CR>
 
 "" Git blame shortcut (fugitive)
 nnoremap <leader>bl :Git blame<CR>
