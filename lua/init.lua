@@ -83,6 +83,95 @@ vim.keymap.set(
   { desc = "Close the quickfix/loclist and jump back if inside" }
 )
 
+------------------------------ Editor sync -------------------------------------
+
+local function loaded_file_buffers()
+  local bufs = {}
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_loaded(buf)
+      and vim.bo[buf].buftype == ""
+      and vim.api.nvim_buf_get_name(buf) ~= "" then
+      table.insert(bufs, buf)
+    end
+  end
+  return bufs
+end
+
+local function check_loaded_file_buffers(opts)
+  opts = opts or {}
+  local bufs = loaded_file_buffers()
+  local modified = {}
+  for _, buf in ipairs(bufs) do
+    if vim.bo[buf].modified then
+      local name = vim.api.nvim_buf_get_name(buf)
+      table.insert(modified, vim.fn.fnamemodify(name, ":~:."))
+    end
+  end
+  if opts.abort_on_modified and #modified > 0 then
+    vim.notify(
+      "Sync aborted because these buffers have unsaved changes:\n"
+        .. table.concat(modified, "\n"),
+      vim.log.levels.ERROR
+    )
+    return false
+  end
+
+  -- Bare :checktime is deferred from callbacks, so check each buffer explicitly.
+  for _, buf in ipairs(bufs) do
+    if not vim.bo[buf].modified then
+      vim.cmd.checktime({ args = { tostring(buf) } })
+    end
+  end
+  return true
+end
+
+local function sync_editor_state()
+  if not check_loaded_file_buffers({ abort_on_modified = true }) then
+    return
+  end
+
+  local seen = {}
+  local names = {}
+  for _, client in ipairs(vim.lsp.get_clients()) do
+    vim.diagnostic.reset(vim.lsp.diagnostic.get_namespace(client.id))
+    if not seen[client.name] then
+      seen[client.name] = true
+      table.insert(names, client.name)
+    end
+  end
+  for _, name in ipairs(names) do
+    vim.cmd.lsp({ args = { "restart", name } })
+  end
+
+  local msg = "Checked file buffers against disk"
+  if #names > 0 then
+    msg = msg .. " and requested restart of " .. table.concat(names, ", ")
+  end
+  vim.notify(msg)
+end
+
+-- I often make changes outside of nvim (typically with LLM agents). Use a
+-- FocusGained callback to reload changed buffers so that LSP servers stay in
+-- sync with the current state. (They typically see buffer state, no disk state,
+-- as canonical.)
+vim.api.nvim_create_autocmd("FocusGained", {
+  group = vim.api.nvim_create_augroup("CheckLoadedFileBuffers", {}),
+  callback = function()
+    -- :checktime is deferred when called directly from an autocmd.
+    vim.schedule(check_loaded_file_buffers)
+  end,
+  desc = "Reload unmodified loaded file buffers after external changes",
+})
+
+-- TODO: Delete this if it proves unnecessary due to the FocusGained callback
+-- above.
+vim.api.nvim_create_user_command(
+  "SyncEditorState",
+  sync_editor_state,
+  { desc = "Reload changed buffers from disk and restart active LSP clients" }
+)
+
+
 ----------------------- Language servers ---------------------------------------
 
 vim.lsp.enable({"gopls"})
