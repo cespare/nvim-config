@@ -1,5 +1,14 @@
 local stringx = require("stringx")
 
+------------------------------ General config ----------------------------------
+
+-- Swap is useful for letting me know about concurrent edits, but ~never has a
+-- recovery benefit for me since I save very frequently. Put swap files in a
+-- volatile directory so they get wiped if the computer crashes.
+local swapdir = (vim.env.XDG_RUNTIME_DIR or "/tmp") .. "/nvim/swap"
+vim.fn.mkdir(swapdir, "p", 448) -- 0700
+vim.opt.directory = swapdir .. "//"
+
 --------------------------------- Plugins --------------------------------------
 
 vim.pack.add({
@@ -170,7 +179,6 @@ vim.api.nvim_create_user_command(
   sync_editor_state,
   { desc = "Reload changed buffers from disk and restart active LSP clients" }
 )
-
 
 ----------------------- Language servers ---------------------------------------
 
