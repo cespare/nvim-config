@@ -365,6 +365,26 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- Set up nvim-treesitter. This requires tree-sitter (>=0.26.1) and a C compiler.
 local treesitter = require("nvim-treesitter")
 treesitter.setup()
+
+-- Override tree-sitter-go because it is out of date and doesn't understand some
+-- newer Go syntax: https://github.com/tree-sitter/tree-sitter-go/pull/193
+--
+-- Unfortunately, the project seems abandoned:
+-- https://github.com/tree-sitter/tree-sitter-go/issues/195
+--
+-- I'm using a fork that has a few fixes. In the future, check if there's a more
+-- official Go tree-sitter grammar again.
+vim.api.nvim_create_autocmd("User", {
+  group = vim.api.nvim_create_augroup("GoParserOverride", {}),
+  pattern = "TSUpdate",
+  callback = function()
+    require("nvim-treesitter.parsers").go.install_info = {
+      url = "https://github.com/alienvspredator/tree-sitter-go",
+      revision = "c42d459269cfd7c7723883ea06efd426217715a4",
+    }
+  end,
+})
+
 -- The comment parser highlights things like TODO and FIXME inside comments
 -- (via injection; see queries/lua/injections.scm for the Lua-specific override).
 -- Other parsers we use (c, lua, markdown, markdown_inline, query, vim, vimdoc)
