@@ -7,6 +7,10 @@ end
 
 function maybe_insert_closing_brace()
   local no = '\n'
+  local raw = require("goindent").newline()
+  if raw then
+    return raw
+  end
   local n, col = unpack(a.nvim_win_get_cursor(0))
   n = n - 1 -- switch indexing schemes
   local lines = a.nvim_buf_get_lines(0, n, n+50, false)

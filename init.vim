@@ -198,7 +198,9 @@ augroup go
   au FileType go,asm,gomod setlocal noexpandtab
   au FileType go,asm,gomod setlocal ts=8
   au FileType go,asm,gomod setlocal sw=8
-  au FileType go,gomod inoremap <silent> <buffer> <CR> <C-R>=luaeval("maybe_insert_closing_brace()")<CR>
+  " Wait for preceding input to be inserted before checking the syntax tree.
+  au FileType go,gomod inoremap <silent> <buffer> <CR>
+        \ <Cmd>lua vim.api.nvim_feedkeys(maybe_insert_closing_brace(), "ni", false)<CR>
   au BufRead,BufNewFile *.tmpl set filetype=gohtmltmpl
   au BufRead,BufNewFile *.tpl set filetype=gotexttmpl
 augroup END

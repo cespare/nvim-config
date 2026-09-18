@@ -469,6 +469,10 @@ vim.api.nvim_create_user_command(
 local snippets = require("snippets")
 
 local function tab_expand()
+  if require("goindent").in_raw_string() then
+    vim.api.nvim_feedkeys("  ", "ni", false)
+    return
+  end
   -- If a snippet is currently active, jump to the next placeholder.
   if vim.snippet.active({ direction = 1 }) then
     return vim.snippet.jump(1)
