@@ -44,7 +44,8 @@ return {
     gopls = {
       linksInHover = false,
       experimentalPostfixCompletions = false,
-      gofumpt = true,
+      -- TODO(caleb): Re-enable once gopls embeds gofumpt >= 0.11.0.
+      -- gofumpt = true,
       ['local'] = 'liftoff.io/',
       analyses = {
         unusedparams = false,
@@ -54,6 +55,7 @@ return {
         QF1002 = false,
         QF1003 = false,
         QF1004 = false,
+        QF1012 = false,
 
         -- Disable all modernizers for now.
         any = false,
